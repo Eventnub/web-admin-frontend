@@ -22,6 +22,24 @@ const Loadable = (Component) => (props) => {
   );
 };
 
+// IMPORT COMPONENTS
+
+// Authentication
+const Auth = Loadable(lazy(() => import('../pages/auth/Auth')));
+const Login = Loadable(lazy(() => import('../pages/auth/Login')));
+const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+
+// Dashboard
+const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
+
+// Main
+const LogInPage = Loadable(lazy(() => import('../pages/LoginPage')));
+const HomePage = Loadable(lazy(() => import('../pages/dashboard/Home')));
+const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
+const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
+const Page500 = Loadable(lazy(() => import('../pages/Page500')));
+const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+
 export default function Router() {
   return useRoutes([
     // Authentication Routes
@@ -66,6 +84,7 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'events', element: <Events /> },
+        { path: 'home', element: <HomePage /> },
       ],
     },
 
@@ -83,26 +102,10 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <HomePage />,
+      element: <LogInPage />,
       index: true,
     },
+
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
-
-// IMPORT COMPONENTS
-
-// Authentication
-const Auth = Loadable(lazy(() => import('../pages/auth/Auth')));
-const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const Register = Loadable(lazy(() => import('../pages/auth/Register')));
-
-// Dashboard
-const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
-
-// Main
-const HomePage = Loadable(lazy(() => import('../pages/Home')));
-const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
-const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
-const Page500 = Loadable(lazy(() => import('../pages/Page500')));
-const NotFound = Loadable(lazy(() => import('../pages/Page404')));

@@ -2,7 +2,7 @@ import { pxToRem, responsiveFontSizes } from '../utils/getFontValue';
 
 // ----------------------------------------------------------------------
 
-const FONT_PRIMARY = 'Poppins, sans-serif'; // Google Font
+const FONT_PRIMARY = 'Inter, sans-serif'; // Google Font
 // const FONT_SECONDARY = 'CircularStd, sans-serif'; // Local Font
 
 const typography = {
@@ -10,7 +10,7 @@ const typography = {
   fontWeightRegular: 400,
   fontWeightMedium: 600,
   fontWeightBold: 700,
-  color: "#547196",
+  color: '#547196',
   h1: {
     fontWeight: 700,
     lineHeight: 80 / 64,

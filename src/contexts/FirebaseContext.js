@@ -48,7 +48,7 @@ function FirebaseProvider({ children }) {
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged((user) => {
-        if (user && user.emailVerified) {
+        if (user) {
           setProfile(user);
           dispatch({
             type: 'INITIALISE',
@@ -66,9 +66,9 @@ function FirebaseProvider({ children }) {
 
   const login = async (email, password) => {
     const credentials = await firebase.auth().signInWithEmailAndPassword(email, password);
-    if (!credentials.user.emailVerified) {
-      throw new Error('Unverified account! Please verify your account and try again');
-    }
+    // if (!credentials.user.emailVerified) {
+    //   throw new Error('Unverified account! Please verify your account and try again');
+    // }
   };
 
   const loginWithGoogle = () => {
@@ -79,7 +79,7 @@ function FirebaseProvider({ children }) {
   const register = (email, password, firstName, lastName, phoneNumber) => {
     // TODO: Call API to register account
     console.log(email, password, firstName, lastName, phoneNumber);
-  }
+  };
 
   const logout = async () => {
     await firebase.auth().signOut();
