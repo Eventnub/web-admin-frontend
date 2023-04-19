@@ -7,6 +7,16 @@ const jsonHeader = {
   },
 };
 
+const getMultipartHeaderWithAuthToken = (idToken) => ({
+  headers: {
+    'Content-Type': 'multipart/form-data',
+    Authorization: `Bearer ${idToken}`,
+  },
+});
+
 export const requests = {
-  login: (data) => axios.post(endpoints.login, data, jsonHeader),
+  getEvents: () => axios.get(endpoints.getEvents, jsonHeader),
+  getEvent: (uid) => axios.get(`${endpoints.getEvents}/${uid}`, jsonHeader),
+  createEvent: (idToken, data) =>
+    axios.post(`${endpoints.createEvent}`, data, getMultipartHeaderWithAuthToken(idToken)),
 };

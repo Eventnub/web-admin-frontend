@@ -31,6 +31,12 @@ const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 
 // Dashboard
 const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
+const EventDetailsPage = Loadable(lazy(() => import('../pages/dashboard/EventDatailsPage')));
+const CreateEventPage = Loadable(lazy(() => import('../pages/dashboard/CreateEventPage')));
+const ArchivedEventsPage = Loadable(lazy(() => import('../pages/dashboard/ArchivedEventsPage')));
+const AudioValidationPage = Loadable(lazy(() => import('../pages/dashboard/AudioValidationPage')));
+const PendingValidationsPage = Loadable(lazy(() => import('../pages/dashboard/PendingValidationsPage')));
+const ArtistsPage = Loadable(lazy(() => import('../pages/dashboard/ArtistsPage')));
 
 // Main
 const LogInPage = Loadable(lazy(() => import('../pages/LoginPage')));
@@ -85,6 +91,15 @@ export default function Router() {
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'events', element: <Events /> },
         { path: 'home', element: <HomePage /> },
+        {
+          path: 'event-details/:eventId',
+          element: <EventDetailsPage />,
+        },
+        { path: 'create-event', element: <CreateEventPage /> },
+        { path: 'archived-events', element: <ArchivedEventsPage /> },
+        { path: 'audio-validation', element: <AudioValidationPage /> },
+        { path: 'pending-validations', element: <PendingValidationsPage /> },
+        { path: 'artists', element: <ArtistsPage /> },
       ],
     },
 
@@ -105,6 +120,14 @@ export default function Router() {
       element: <LogInPage />,
       index: true,
     },
+    // {
+    //   path: 'home',
+    //   element: <HomePage />,
+    // },
+    // {
+    //   path: 'event-details/:eventId',
+    //   element: <EventDetailsPage />,
+    // },
 
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);

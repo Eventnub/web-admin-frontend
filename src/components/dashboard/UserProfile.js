@@ -1,9 +1,19 @@
-import React from 'react';
-import { Box, Typography, IconButton, Badge, Avatar } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, IconButton, Badge, Avatar, Menu, MenuItem } from '@mui/material';
 import { Notifications, ExpandMore } from '@mui/icons-material';
 import img from '../../assets/img.png';
+import LogoutButton from '../../layouts/dashboard/navbar/LogoutButton';
 
 export default function UserProfile() {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <Badge
@@ -34,9 +44,14 @@ export default function UserProfile() {
       >
         <Avatar alt="Remy Sharp" src={img} variant="rounded" />
         <Typography sx={{ color: '#fff' }}>Eventnub</Typography>
-        <IconButton size="small">
+        <IconButton size="small" onClick={handleMenuClick}>
           <ExpandMore sx={{ color: '#fff' }} />
         </IconButton>
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+          <MenuItem onClick={handleMenuClose}>
+            <LogoutButton />
+          </MenuItem>
+        </Menu>
       </Box>
     </Box>
   );

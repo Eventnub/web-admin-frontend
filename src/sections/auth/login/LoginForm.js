@@ -1,5 +1,6 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { Alert, Typography, InputAdornment, Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -9,6 +10,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 
 export default function LoginForm() {
   const { login } = useFirebase();
+  const navigate = useNavigate();
   const isMountedRef = useIsMountedRef();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -26,6 +28,8 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         await login(values.email, values.password);
+        navigate('/dashboard/home');
+
         if (isMountedRef.current) {
           setSubmitting(false);
         }

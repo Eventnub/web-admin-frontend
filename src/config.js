@@ -32,7 +32,7 @@ export const MAPBOX_API = process.env.REACT_APP_MAPBOX;
 export const GOOGLE_ANALYTICS_API = process.env.REACT_APP_GA_MEASUREMENT_ID;
 
 // ROOT PATH AFTER LOGIN SUCCESSFUL
-export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.transfer;
+export const PATH_AFTER_LOGIN = PATH_DASHBOARD.general.home;
 
 // LAYOUT
 // ----------------------------------------------------------------------

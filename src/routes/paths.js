@@ -32,8 +32,10 @@ export const PATH_PAGE = {
 export const PATH_DASHBOARD = {
   root: ROOTS_DASHBOARD,
   general: {
+    home: path(ROOTS_DASHBOARD, '/home'),
     events: path(ROOTS_DASHBOARD, '/events'),
-    profile: path(ROOTS_DASHBOARD, '/profile'),
-    settings: path(ROOTS_DASHBOARD, '/settings'),
-  }
+    artists: path(ROOTS_DASHBOARD, '/artists'),
+    archived: path(ROOTS_DASHBOARD, '/archived-events'),
+    eventDetails: path(ROOTS_DASHBOARD, '/event-details/:eventId'),
+  },
 };

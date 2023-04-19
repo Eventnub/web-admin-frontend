@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Stack, Drawer, Typography } from '@mui/material';
+import { Stack, Drawer, Typography } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
@@ -12,13 +12,12 @@ import cssStyles from '../../../utils/cssStyles';
 // config
 import { DASHBOARD_NAVBAR_WIDTH, DASHBOARD_NAVBAR_COLLAPSE_WIDTH } from '../../../config';
 // components
-import Logo from '../../../components/Logo';
 import Scrollbar from '../../../components/Scrollbar';
 import NavSection from '../../../components/nav-section';
 //
-import LogoutButton from './LogoutButton';
 import CollapseButton from './CollapseButton';
 import navConfig from './NavConfig';
+import logo from '../../../assets/dashboardLogo.png';
 
 // ----------------------------------------------------------------------
 
@@ -74,16 +73,14 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Stack direction="row" alignItems="center" justifyContent="center">
-            <Logo sx={{ mr: 1 }} />
+            <Link to="/dashboard/home">
+              <img src={logo} alt="logo" />
+            </Link>
+
             {isDesktop && !isCollapse && (
-              <>
-                <Typography variant="h5" color="primary.main">
-                  Dose
-                </Typography>
-                <Typography variant="h5">
-                  amp
-                </Typography>
-              </>
+              <Typography variant="h5" sx={{ letterSpacing: '.2rem', color: '#515151', ml: 1.5 }}>
+                eventnub
+              </Typography>
             )}
           </Stack>
 
@@ -95,9 +92,9 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
 
       <NavSection navConfig={navConfig} isCollapse={isCollapse} />
 
-      <Box sx={{ flexGrow: 1 }} />
+      {/* <Box sx={{ flexGrow: 1 }} /> */}
 
-      {!isCollapse && <LogoutButton />}
+      {/* {!isCollapse && <LogoutButton />} */}
     </Scrollbar>
   );
 
@@ -113,7 +110,11 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
       }}
     >
       {!isDesktop && (
-        <Drawer open={isOpenSidebar} onClose={onCloseSidebar} PaperProps={{ sx: { width: DASHBOARD_NAVBAR_WIDTH } }}>
+        <Drawer
+          open={isOpenSidebar}
+          onClose={onCloseSidebar}
+          PaperProps={{ sx: { width: DASHBOARD_NAVBAR_WIDTH, bgcolor: '#EDF5F6' } }}
+        >
           {renderContent}
         </Drawer>
       )}
@@ -127,8 +128,7 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
           PaperProps={{
             sx: {
               width: DASHBOARD_NAVBAR_WIDTH,
-              borderRightStyle: 'dashed',
-              bgcolor: 'background.default',
+              bgcolor: '#EDF5F6',
               transition: (theme) =>
                 theme.transitions.create('width', {
                   duration: theme.transitions.duration.standard,
