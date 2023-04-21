@@ -40,7 +40,6 @@ export default function Quiz({ startDate, endDate }) {
 
     fetchEvents();
   }, [eventId, user.idToken]);
-  console.log(questions);
   return (
     <Box sx={{ mt: '4rem' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '2rem' }}>

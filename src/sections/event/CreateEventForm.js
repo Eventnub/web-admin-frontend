@@ -64,7 +64,6 @@ const CreateEventForm = () => {
     });
     return null;
   };
-  console.log(user);
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
