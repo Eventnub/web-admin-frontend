@@ -17,7 +17,7 @@ const PRIMARY = {
 const SECONDARY = {
   lighter: '#D6E4FF',
   light: '#84A9FF',
-  main: '#3366FF',
+  main: '#FF6C2C',
   dark: '#1939B7',
   darker: '#091A7A',
 };
@@ -115,7 +115,7 @@ const palette = {
     ...COMMON,
     mode: 'light',
     text: { primary: GREY[800], secondary: GREY[600], disabled: GREY[500] },
-    background: { paper: '#F0F5FF', default: '#F0F5FF', neutral: GREY[200] },
+    background: { paper: '#F0F5FF', default: '#FFFFFF', neutral: GREY[200] },
     action: { active: GREY[600], ...COMMON.action },
   },
   dark: {

@@ -22,6 +22,30 @@ const Loadable = (Component) => (props) => {
   );
 };
 
+// IMPORT COMPONENTS
+
+// Authentication
+const Auth = Loadable(lazy(() => import('../pages/auth/Auth')));
+const Login = Loadable(lazy(() => import('../pages/auth/Login')));
+const Register = Loadable(lazy(() => import('../pages/auth/Register')));
+
+// Dashboard
+const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
+const EventDetailsPage = Loadable(lazy(() => import('../pages/dashboard/EventDatailsPage')));
+const CreateEventPage = Loadable(lazy(() => import('../pages/dashboard/CreateEventPage')));
+const UpdateEventPage = Loadable(lazy(() => import('../pages/dashboard/UpdateEvent')));
+const ArchivedEventsPage = Loadable(lazy(() => import('../pages/dashboard/ArchivedEventsPage')));
+const AudioValidationPage = Loadable(lazy(() => import('../pages/dashboard/AudioValidationPage')));
+const PendingValidationsPage = Loadable(lazy(() => import('../pages/dashboard/PendingValidationsPage')));
+const ArtistsPage = Loadable(lazy(() => import('../pages/dashboard/ArtistsPage')));
+
+// Main
+const HomePage = Loadable(lazy(() => import('../pages/dashboard/Home')));
+const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
+const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
+const Page500 = Loadable(lazy(() => import('../pages/Page500')));
+const NotFound = Loadable(lazy(() => import('../pages/Page404')));
+
 export default function Router() {
   return useRoutes([
     // Authentication Routes
@@ -36,14 +60,7 @@ export default function Router() {
           ),
           index: true,
         },
-        {
-          path: 'login',
-          element: (
-            <GuestGuard>
-              <Login />
-            </GuestGuard>
-          ),
-        },
+
         {
           path: 'register',
           element: (
@@ -66,6 +83,17 @@ export default function Router() {
       children: [
         { element: <Navigate to={PATH_AFTER_LOGIN} replace />, index: true },
         { path: 'events', element: <Events /> },
+        { path: 'home', element: <HomePage /> },
+        {
+          path: 'event-details/:eventId',
+          element: <EventDetailsPage />,
+        },
+        { path: 'create-event', element: <CreateEventPage /> },
+        { path: 'archived-events', element: <ArchivedEventsPage /> },
+        { path: 'audio-validation', element: <AudioValidationPage /> },
+        { path: 'pending-validations', element: <PendingValidationsPage /> },
+        { path: 'artists', element: <ArtistsPage /> },
+        { path: 'update-event/:eventId', element: <UpdateEventPage /> },
       ],
     },
 
@@ -83,26 +111,18 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <HomePage />,
+      element: <Login />,
       index: true,
     },
+    // {
+    //   path: 'home',
+    //   element: <HomePage />,
+    // },
+    // {
+    //   path: 'event-details/:eventId',
+    //   element: <EventDetailsPage />,
+    // },
+
     { path: '*', element: <Navigate to="/404" replace /> },
   ]);
 }
-
-// IMPORT COMPONENTS
-
-// Authentication
-const Auth = Loadable(lazy(() => import('../pages/auth/Auth')));
-const Login = Loadable(lazy(() => import('../pages/auth/Login')));
-const Register = Loadable(lazy(() => import('../pages/auth/Register')));
-
-// Dashboard
-const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
-
-// Main
-const HomePage = Loadable(lazy(() => import('../pages/Home')));
-const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
-const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
-const Page500 = Loadable(lazy(() => import('../pages/Page500')));
-const NotFound = Loadable(lazy(() => import('../pages/Page404')));

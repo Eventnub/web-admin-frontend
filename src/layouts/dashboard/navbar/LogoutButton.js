@@ -3,7 +3,6 @@ import { Stack, Button, Typography } from '@mui/material';
 // hooks
 import useFirebase from '../../../hooks/useFirebase';
 //
-import Iconify from '../../../components/Iconify';
 
 export default function LogoutButton() {
   const { logout } = useFirebase();
@@ -22,11 +21,10 @@ export default function LogoutButton() {
         size="large"
         variant="outlined"
         color="error"
-        startIcon={<Iconify icon="majesticons:logout" />}
         onClick={handleLogout}
         sx={{ border: 'none', '&:hover': { border: 'none' } }}
       >
-        <Typography variant="body2">Logout</Typography>
+        <Typography sx={{ color: '#000', fontWeight: '600' }}>Logout</Typography>
       </Button>
     </Stack>
   );

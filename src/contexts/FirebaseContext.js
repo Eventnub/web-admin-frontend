@@ -47,8 +47,11 @@ function FirebaseProvider({ children }) {
 
   useEffect(
     () =>
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user && user.emailVerified) {
+      firebase.auth().onAuthStateChanged(async (user) => {
+        if (user) {
+          const idToken = await firebase.auth().currentUser.getIdToken();
+          user = { ...user, idToken };
+
           setProfile(user);
           dispatch({
             type: 'INITIALISE',
@@ -65,10 +68,10 @@ function FirebaseProvider({ children }) {
   );
 
   const login = async (email, password) => {
-    const credentials = await firebase.auth().signInWithEmailAndPassword(email, password);
-    if (!credentials.user.emailVerified) {
-      throw new Error('Unverified account! Please verify your account and try again');
-    }
+    await firebase.auth().signInWithEmailAndPassword(email, password);
+    // if (!credentials.user.emailVerified) {
+    //   throw new Error('Unverified account! Please verify your account and try again');
+    // }
   };
 
   const loginWithGoogle = () => {
@@ -79,7 +82,7 @@ function FirebaseProvider({ children }) {
   const register = (email, password, firstName, lastName, phoneNumber) => {
     // TODO: Call API to register account
     console.log(email, password, firstName, lastName, phoneNumber);
-  }
+  };
 
   const logout = async () => {
     await firebase.auth().signOut();
@@ -128,6 +131,7 @@ function FirebaseProvider({ children }) {
           firstName: profile?.firstName || '',
           lastName: profile?.lastName || '',
           gender: profile?.gender || '',
+          idToken: profile?.idToken || '',
         },
         login,
         register,

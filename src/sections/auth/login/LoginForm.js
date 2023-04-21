@@ -1,17 +1,16 @@
 import * as Yup from 'yup';
 import { useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-import { Link, Stack, Alert, Typography, InputAdornment, Box } from '@mui/material';
+import { Alert, Typography, InputAdornment, Box, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { PATH_AUTH } from '../../../routes/paths';
+import { Person, LockOpen } from '@mui/icons-material';
 import useFirebase from '../../../hooks/useFirebase';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-import Iconify from '../../../components/Iconify';
-import InputStyle from '../../../components/InputStyle';
 
 export default function LoginForm() {
   const { login } = useFirebase();
+  const navigate = useNavigate();
   const isMountedRef = useIsMountedRef();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -29,6 +28,8 @@ export default function LoginForm() {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         await login(values.email, values.password);
+        navigate('/dashboard/home');
+
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -60,41 +61,43 @@ export default function LoginForm() {
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        <Stack spacing={3}>
-          <Box>
-            <Typography variant="body1">Email address</Typography>
-            <InputStyle
+        <Box sx={{ diplay: 'flex', flexDirection: 'column' }}>
+          <Box display="flex" alignItems={'stretch'}>
+            <Box sx={{ display: 'flex', bgcolor: '#1358A5', alignItems: 'center', px: 1 }}>
+              <Person sx={{ color: '#fff' }} />
+            </Box>
+            <TextField
+              placeholder="Email"
+              variant="outlined"
               fullWidth
-              size="large"
-              placeholder="What's your email address"
+              size="small"
               {...emailFieldProps}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Iconify icon="eva:email-outline" sx={{ color: 'text.disabled', width: 24, height: 24 }} />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ mt: 1 }}
               error={Boolean(touched.email && errors.email)}
               helperText={touched.email && errors.email}
+              InputProps={{
+                sx: {
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                },
+              }}
             />
           </Box>
-
-          <Box>
-            <Typography variant="body1">Password</Typography>
-            <InputStyle
+          <Box display="flex" mt={3}>
+            <Box sx={{ display: 'flex', bgcolor: '#1358A5', alignItems: 'center', px: 1 }}>
+              <LockOpen sx={{ color: '#fff' }} />
+            </Box>
+            <TextField
               fullWidth
-              size="large"
-              placeholder="Choose a password"
+              variant="outlined"
+              placeholder="Password"
+              size="small"
               type={showPassword ? 'text' : 'password'}
               {...getFieldProps('password')}
               InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Iconify icon="eva:lock-outline" sx={{ color: 'text.disabled', width: 24, height: 24 }} />
-                  </InputAdornment>
-                ),
+                sx: {
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                },
                 endAdornment: (
                   <InputAdornment onClick={handleShowPassword} position="end" sx={{ cursor: 'pointer' }}>
                     <Typography variant="caption" sx={{ color: 'grey.500' }}>
@@ -103,30 +106,22 @@ export default function LoginForm() {
                   </InputAdornment>
                 ),
               }}
-              sx={{ mt: 1 }}
               error={Boolean(touched.password && errors.password)}
               helperText={touched.password && errors.password}
             />
           </Box>
-        </Stack>
-
-        <Typography variant="body2" sx={{ mt: 4, mb: 4 }}>
-          Forgot your password?{' '}
-          <Link component={RouterLink} variant="subtitle2" to={PATH_AUTH.resetPassword} underline="none">
-            Request a new one
-          </Link>
-        </Typography>
-
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={isSubmitting}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Login
-        </LoadingButton>
+          <Box display="flex" justifyContent="flex-end" mt={3}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+              disabled={!(formik.isValid && formik.dirty)}
+              sx={{ boxShadow: 'none', bgcolor: '#1358A5', width: '35%', borderRadius: '5px', height: '50px' }}
+            >
+              Login
+            </LoadingButton>
+          </Box>
+        </Box>
 
         {errors.afterSubmit && (
           <Alert severity="error" sx={{ mt: 4 }}>
