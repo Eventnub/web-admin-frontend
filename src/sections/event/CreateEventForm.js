@@ -64,7 +64,7 @@ const CreateEventForm = () => {
     });
     return null;
   };
-
+  console.log(user);
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
@@ -143,7 +143,7 @@ const CreateEventForm = () => {
             await requests.createEvent(user.idToken, formData);
             setSubmitting(false);
             resetForm();
-            navigate('/my-events');
+            navigate('/dashboard/home');
           } catch (error) {
             console.log(error);
           }

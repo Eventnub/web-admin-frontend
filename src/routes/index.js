@@ -33,13 +33,13 @@ const Register = Loadable(lazy(() => import('../pages/auth/Register')));
 const Events = Loadable(lazy(() => import('../pages/dashboard/Events')));
 const EventDetailsPage = Loadable(lazy(() => import('../pages/dashboard/EventDatailsPage')));
 const CreateEventPage = Loadable(lazy(() => import('../pages/dashboard/CreateEventPage')));
+const UpdateEventPage = Loadable(lazy(() => import('../pages/dashboard/UpdateEvent')));
 const ArchivedEventsPage = Loadable(lazy(() => import('../pages/dashboard/ArchivedEventsPage')));
 const AudioValidationPage = Loadable(lazy(() => import('../pages/dashboard/AudioValidationPage')));
 const PendingValidationsPage = Loadable(lazy(() => import('../pages/dashboard/PendingValidationsPage')));
 const ArtistsPage = Loadable(lazy(() => import('../pages/dashboard/ArtistsPage')));
 
 // Main
-const LogInPage = Loadable(lazy(() => import('../pages/LoginPage')));
 const HomePage = Loadable(lazy(() => import('../pages/dashboard/Home')));
 const ComingSoon = Loadable(lazy(() => import('../pages/ComingSoon')));
 const Maintenance = Loadable(lazy(() => import('../pages/Maintenance')));
@@ -60,14 +60,7 @@ export default function Router() {
           ),
           index: true,
         },
-        {
-          path: 'login',
-          element: (
-            <GuestGuard>
-              <Login />
-            </GuestGuard>
-          ),
-        },
+
         {
           path: 'register',
           element: (
@@ -100,6 +93,7 @@ export default function Router() {
         { path: 'audio-validation', element: <AudioValidationPage /> },
         { path: 'pending-validations', element: <PendingValidationsPage /> },
         { path: 'artists', element: <ArtistsPage /> },
+        { path: 'update-event/:eventId', element: <UpdateEventPage /> },
       ],
     },
 
@@ -117,7 +111,7 @@ export default function Router() {
     },
     {
       path: '/',
-      element: <LogInPage />,
+      element: <Login />,
       index: true,
     },
     // {

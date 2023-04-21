@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Typography, Switch, Stack, Button, styled } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import UserProfile from '../../components/dashboard/UserProfile';
 import PageTitle from '../../components/dashboard/PageTitle';
@@ -11,6 +11,7 @@ import Engagements from '../../components/dashboard/eventDetails/Engagements';
 import RaffleDraw from '../../components/dashboard/eventDetails/RaffleDraw';
 import Quiz from '../../components/dashboard/eventDetails/Quiz';
 import MusicMatch from '../../components/dashboard/eventDetails/MusicMatch';
+import useFirebase from '../../hooks/useFirebase';
 
 const StyledBox = styled(Box)({
   flex: 1,
@@ -39,6 +40,8 @@ export default function EventDatailsPage() {
   const { date, time } = event;
   const formattedDate = moment(date).format('Do MMM, YYYY').toUpperCase();
   const formattedTime = moment(time, 'HH:mm').format('h:mm A');
+  const navigate = useNavigate();
+  const { user } = useFirebase();
 
   useEffect(() => {
     async function fetchEvents() {
@@ -57,15 +60,30 @@ export default function EventDatailsPage() {
   }, [eventId]);
   console.log(event);
 
+  const handleArchive = async () => {
+    const formData = new FormData();
+    formData.append('isArchived', true);
+    try {
+      await requests.updateEvent(eventId, formData, user.idToken);
+      navigate('/dashboard/archived-events');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <Box sx={{ height: 'auto', width: '100%', pt: '1.5rem', pl: '1.5rem', pr: '1rem', bgcolor: '#F4FAFB' }}>
+    <Box
+      sx={{ height: 'auto', width: '100%', pt: '1.5rem', pl: '1.5rem', pr: '1rem', bgcolor: '#F4FAFB', pb: '1.5rem' }}
+    >
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <UserProfile />
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '1rem' }}>
         <PageTitle title={event.name} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
-          <Typography sx={{ color: '#000', fontSize: '1rem', fontWeight: '500' }}>Visible to public</Typography>
+          <Typography sx={{ color: '#000', fontSize: '1rem', fontWeight: '500' }}>
+            Approve and make visible to public
+          </Typography>
           <Switch size="small" />
         </Box>
       </Box>
@@ -169,7 +187,7 @@ export default function EventDatailsPage() {
         <Button
           variant="outlined"
           component={Link}
-          to={`/update-event/${eventId}`}
+          to={`/dashboard/update-event/${eventId}`}
           startIcon={<EditIcon />}
           sx={{ boxShadow: 'none', color: '#0BB7CE', border: '1px solid #0BB7CE' }}
         >
@@ -178,7 +196,7 @@ export default function EventDatailsPage() {
         <Button
           startIcon={<ArchiveIcon />}
           variant="outlined"
-          // onClick={handleArchive}
+          onClick={handleArchive}
           sx={{ boxShadow: 'none', color: '#FF6C2C', border: '1px solid #FF6C2C' }}
         >
           Send to Archive
@@ -200,7 +218,7 @@ export default function EventDatailsPage() {
       </Box>
       <Engagements />
       <RaffleDraw />
-      <Quiz />
+      <Quiz endDate={event.gameEndTimestamp} startDate={event.gameStartTimestamp} />
       <MusicMatch />
     </Box>
   );

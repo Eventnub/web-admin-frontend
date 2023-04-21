@@ -47,8 +47,11 @@ function FirebaseProvider({ children }) {
 
   useEffect(
     () =>
-      firebase.auth().onAuthStateChanged((user) => {
+      firebase.auth().onAuthStateChanged(async (user) => {
         if (user) {
+          const idToken = await firebase.auth().currentUser.getIdToken();
+          user = { ...user, idToken };
+
           setProfile(user);
           dispatch({
             type: 'INITIALISE',
@@ -65,7 +68,7 @@ function FirebaseProvider({ children }) {
   );
 
   const login = async (email, password) => {
-    const credentials = await firebase.auth().signInWithEmailAndPassword(email, password);
+    await firebase.auth().signInWithEmailAndPassword(email, password);
     // if (!credentials.user.emailVerified) {
     //   throw new Error('Unverified account! Please verify your account and try again');
     // }
@@ -128,6 +131,7 @@ function FirebaseProvider({ children }) {
           firstName: profile?.firstName || '',
           lastName: profile?.lastName || '',
           gender: profile?.gender || '',
+          idToken: profile?.idToken || '',
         },
         login,
         register,

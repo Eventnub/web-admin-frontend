@@ -1,20 +1,41 @@
 import React from 'react';
-import { Box, Typography, useTheme, CircularProgress } from '@mui/material';
+import { Box, Typography, useTheme, CircularProgress, TextField, MenuItem, InputAdornment } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import filter from '../../assets/filter.png';
 
-export default function Events({ events, isLoading }) {
+export default function Events({ events, isLoading, handleFilterChange, title }) {
   const theme = useTheme();
 
   console.log(events);
   return (
     <Box>
-      <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '1.2rem' }}>
-        Archived{' '}
-        <span style={{ color: '#000', fontWeight: '700', fontSize: '.8rem' }}>
-          {events.length < 10 ? `0${events.length}` : events.length}
-        </span>
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+        <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '1.2rem' }}>
+          {title}
+          <span style={{ color: '#000', fontWeight: '700', fontSize: '.8rem' }}>
+            {events.length < 10 ? `0${events.length}` : events.length}
+          </span>
+        </Typography>
+
+        <TextField
+          select
+          sx={{ display: title === 'Recently Created' ? 'block' : 'none' }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <img src={filter} alt="filter" />
+              </InputAdornment>
+            ),
+          }}
+          onChange={handleFilterChange}
+        >
+          <MenuItem value="All">All</MenuItem>
+          <MenuItem value="Created by Admin">Created by Admin</MenuItem>
+          <MenuItem value="Created by User">Created by User</MenuItem>
+          <MenuItem value="Unapproved Events">Unapproved Events</MenuItem>
+        </TextField>
+      </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', mt: '2rem', gap: '5rem', height: 'auto' }}>
         {isLoading ? (
           <Box sx={{ m: 'auto' }}>
@@ -78,4 +99,6 @@ export default function Events({ events, isLoading }) {
 Events.propTypes = {
   events: PropTypes.array,
   isLoading: PropTypes.bool,
+  handleFilterChange: PropTypes.func,
+  title: PropTypes.string,
 };

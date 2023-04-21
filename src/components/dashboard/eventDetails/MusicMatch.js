@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Typography, Switch, Stack, IconButton, TextField, Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+import { Formik, Form } from 'formik';
+// import * as Yup from 'yup';
 import upload from '../../../assets/upload.png';
 
 export default function MusicMatch() {
@@ -22,10 +22,10 @@ export default function MusicMatch() {
           endDate: '',
         }}
       >
-        {({ isSubmitting }) => (
+        {() => (
           <Form autoComplete="off">
             <Box sx={{ bgcolor: '#fff', borderRadius: '40px', height: 250, mt: '1rem', p: '2rem' }}>k</Box>
-            <Box sx={{ height: 430, borderRadius: '10px', border: '1px solid #ABABAB', mt: '1rem', p: '1rem' }}>
+            <Box sx={{ height: 'auto', borderRadius: '10px', border: '1px solid #ABABAB', mt: '1rem', p: '1rem' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', height: '38%', gap: '.5rem', mb: '1rem' }}>
                 <Box sx={{ borderRadius: '10px', border: '1px solid #ABABAB', flex: 1, height: '100%' }}>
                   <Stack sx={{ px: '2rem', py: '1.5rem' }}>

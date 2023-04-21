@@ -15,7 +15,7 @@ export default function Home() {
     async function fetchEvents() {
       try {
         setIsLoading(true);
-        const { data } = await requests.getEvents();
+        const { data } = await requests.getArchivedEvents();
         setEvents(data);
         setIsLoading(false);
       } catch (error) {
@@ -36,7 +36,7 @@ export default function Home() {
         <Filter />
       </Box>
       <Box sx={{ bgcolor: '#fff', mt: 5, p: '1rem' }}>
-        <Events events={events} isLoading={isLoading} />
+        <Events events={events} isLoading={isLoading} title="Archived" />
       </Box>
     </Box>
   );

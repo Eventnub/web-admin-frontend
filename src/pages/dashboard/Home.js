@@ -44,6 +44,22 @@ export default function Home() {
 
     fetchEvents();
   }, []);
+
+  const handleFilterChange = async (e) => {
+    const { value } = e.target.value;
+    console.log(value);
+    if (value === 'Unapproved Events') {
+      try {
+        setIsLoading(true);
+        const { data } = await requests.getUnapprovedEvents();
+        setEvents(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <Box sx={{ bgcolor: '#F4FAFB', height: '100%', width: '100%', pt: 3, pl: 1, pr: 2 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -73,7 +89,12 @@ export default function Home() {
         </StyledBox>
       </Box>
       <Box sx={{ bgcolor: '#fff', mt: 5, p: '1rem' }}>
-        <Events events={events} isLoading={isLoading} />
+        <Events
+          events={events}
+          isLoading={isLoading}
+          handleFilterChange={handleFilterChange}
+          title="Recently Created"
+        />
       </Box>
     </Box>
   );
