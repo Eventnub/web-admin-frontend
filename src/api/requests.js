@@ -37,4 +37,6 @@ export const requests = {
     axios.delete(`${endpoints.deleteQuestion}/${questionId}`, getJsonHeaderWithAuthToken(idToken)),
   createRaffleDraw: (data, idToken) =>
     axios.post(endpoints.createRaffleDraw, data, getJsonHeaderWithAuthToken(idToken)),
+  createMusicMatch: (data, idToken) =>
+    axios.post(endpoints.createMusicMatch, data, getMultipartHeaderWithAuthToken(idToken)),
 };

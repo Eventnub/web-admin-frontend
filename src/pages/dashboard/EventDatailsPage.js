@@ -58,7 +58,6 @@ export default function EventDatailsPage() {
 
     fetchEvents();
   }, [eventId]);
-  console.log(event);
 
   const handleArchive = async () => {
     const formData = new FormData();

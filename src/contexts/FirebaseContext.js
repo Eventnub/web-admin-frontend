@@ -48,15 +48,18 @@ function FirebaseProvider({ children }) {
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged(async (user) => {
-        if (user) {
-          const idToken = await firebase.auth().currentUser.getIdToken();
-          user = { ...user, idToken };
+        if (user && user.emailVerified) {
+          const { claims } = await user.getIdTokenResult(true);
+          if (claims.role === 'admin') {
+            const idToken = await firebase.auth().currentUser.getIdToken();
+            user = { ...user, idToken };
 
-          setProfile(user);
-          dispatch({
-            type: 'INITIALISE',
-            payload: { isAuthenticated: true, user },
-          });
+            setProfile(user);
+            dispatch({
+              type: 'INITIALISE',
+              payload: { isAuthenticated: true, user },
+            });
+          }
         } else {
           dispatch({
             type: 'INITIALISE',
@@ -68,10 +71,15 @@ function FirebaseProvider({ children }) {
   );
 
   const login = async (email, password) => {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
-    // if (!credentials.user.emailVerified) {
-    //   throw new Error('Unverified account! Please verify your account and try again');
-    // }
+    const credentials = await firebase.auth().signInWithEmailAndPassword(email, password);
+    const { claims } = await credentials.user.getIdTokenResult(true);
+
+    if (!credentials.user.emailVerified) {
+      throw new Error('Unverified account! Please verify your account and try again');
+    }
+    if (claims.role !== 'admin') {
+      throw new Error('Credentials must be of an admin account');
+    }
   };
 
   const loginWithGoogle = () => {
