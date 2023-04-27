@@ -7,9 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Resizer from 'react-image-file-resizer';
-import google from '../../assets/Google-drive.png';
+// import google from '../../assets/Google-drive.png';
 import storage from '../../assets/storage.png';
-import cloud from '../../assets/Cloud-upload.png';
+// import cloud from '../../assets/Cloud-upload.png';
 import { requests } from '../../api/requests';
 import useFirebase from '../../hooks/useFirebase';
 import UserProfile from '../../components/dashboard/UserProfile';
@@ -210,7 +210,7 @@ export default function CreateEvent() {
                         </IconButton>
                         <Typography textAlign="center">Storage</Typography>
                       </Stack>
-                      <Stack>
+                      {/* <Stack>
                         <IconButton>
                           <img src={google} alt="google drive" />
                         </IconButton>
@@ -221,7 +221,7 @@ export default function CreateEvent() {
                           <img src={cloud} alt="drop box" />
                         </IconButton>
                         <Typography textAlign="center">Drop Box</Typography>
-                      </Stack>
+                      </Stack> */}
                       <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
                     </Box>
                   </Box>
@@ -325,7 +325,7 @@ export default function CreateEvent() {
                     Add the featured artists for this event
                   </Typography>
                   <Box
-                    sx={{ height: 'auto', border: '1px solid #D1D0D0', borderRadius: '8px', mt: '1.5rem', p: '9px' }}
+                    sx={{ height: 'auto', border: '1px solid #D1D0D0', borderRadius: '8px', mt: '1.5rem', p: '1rem' }}
                   >
                     {artists.length <= 0 ? (
                       <Typography textAlign="center">No artist added yet</Typography>
@@ -343,7 +343,9 @@ export default function CreateEvent() {
                             }}
                             key={index}
                           >
-                            <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1rem' }}>
+                            <Typography
+                              sx={{ color: '#000', fontWeight: '400', fontSize: '1rem', textAlign: 'center' }}
+                            >
                               {artist}
                             </Typography>
                             <IconButton onClick={() => handleRemoveArtist(index)}>
@@ -356,30 +358,31 @@ export default function CreateEvent() {
                   </Box>
                   <Box
                     sx={{
-                      width: '50%',
+                      width: '100%',
                       mt: '1rem',
                       display: 'flex',
                       justifyContent: 'flex-end',
-                      gap: '1rem',
                     }}
                   >
-                    <StyledTextField
-                      variant="outlined"
-                      placeholder="Artist Name"
-                      value={currentArtist}
-                      onChange={(e) => {
-                        setCurrentArtist(e.target.value);
-                      }}
-                      sx={{ '& .MuiOutlinedInput-root': { height: '3rem' } }}
-                    />
-                    <Button
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                      onClick={handleAddArtist}
-                      sx={{ background: '#FF6C2C', boxShadow: 'none', width: '50%', height: '3rem' }}
-                    >
-                      Add Artist
-                    </Button>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                      <StyledTextField
+                        variant="outlined"
+                        placeholder="Artist Name"
+                        value={currentArtist}
+                        onChange={(e) => {
+                          setCurrentArtist(e.target.value);
+                        }}
+                        sx={{ '& .MuiOutlinedInput-root': { height: '3rem' } }}
+                      />
+                      <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={handleAddArtist}
+                        sx={{ background: '#FF6C2C', boxShadow: 'none', width: '50%', height: '3rem' }}
+                      >
+                        Add Artist
+                      </Button>
+                    </Box>
                   </Box>
                 </Box>
                 <Box
@@ -419,13 +422,12 @@ export default function CreateEvent() {
                             }}
                             key={index}
                           >
-                            <Box sx={{ color: '#000', fontWeight: '400', fontSize: '1rem' }}>
+                            <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1rem', flex: 1 }}>
                               {ticket.type}
-                              <br />
+                            </Typography>
+                            <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1rem', flex: 1 }}>
                               {ticket.price}
-                              <br />
-                              {ticket.description}
-                            </Box>
+                            </Typography>
                             <IconButton onClick={() => handleRemoveTicket(index)}>
                               <CancelIcon />
                             </IconButton>

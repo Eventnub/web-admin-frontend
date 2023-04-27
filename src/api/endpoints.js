@@ -12,4 +12,8 @@ export const endpoints = {
   getEventQuestion: getFullUrl('questions/get-event-quiz'),
   createRaffleDraw: getFullUrl('raffle-draws'),
   createMusicMatch: getFullUrl('music-unison'),
+  getEventMusicMatch: getFullUrl('music-unison/get-event-music-unisons'),
+  deleteMusicMatch: getFullUrl('music-unison'),
+  pendingValidations: getFullUrl('music-unison/get-unreviewed-music-unison-submissions/all'),
+  submitMusicMatchVAlidation: getFullUrl('music-unison/review-user-music-submission'),
 };

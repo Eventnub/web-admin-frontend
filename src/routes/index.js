@@ -38,6 +38,7 @@ const ArchivedEventsPage = Loadable(lazy(() => import('../pages/dashboard/Archiv
 const AudioValidationPage = Loadable(lazy(() => import('../pages/dashboard/AudioValidationPage')));
 const PendingValidationsPage = Loadable(lazy(() => import('../pages/dashboard/PendingValidationsPage')));
 const ArtistsPage = Loadable(lazy(() => import('../pages/dashboard/ArtistsPage')));
+const ValidateAudioPage = Loadable(lazy(() => import('../pages/dashboard/ValidateAudioPage')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/dashboard/Home')));
@@ -94,6 +95,7 @@ export default function Router() {
         { path: 'pending-validations', element: <PendingValidationsPage /> },
         { path: 'artists', element: <ArtistsPage /> },
         { path: 'update-event/:eventId', element: <UpdateEventPage /> },
+        { path: 'validate-audio/:musicMatchSubmissionId', element: <ValidateAudioPage /> },
       ],
     },
 

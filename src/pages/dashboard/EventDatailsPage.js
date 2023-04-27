@@ -89,10 +89,10 @@ export default function EventDatailsPage() {
       <Box
         sx={{
           bgcolor: '#fff',
-          height: 200,
+          height: 'auto',
           mt: '1rem',
           borderRadius: '10px',
-          p: '.8rem',
+          p: '1rem',
           display: 'flex',
           alignItems: 'center',
         }}

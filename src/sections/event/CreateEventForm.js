@@ -7,9 +7,9 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Resizer from 'react-image-file-resizer';
-import google from '../../assets/Google-drive.png';
+// import google from '../../assets/Google-drive.png';
 import storage from '../../assets/storage.png';
-import cloud from '../../assets/Cloud-upload.png';
+// import cloud from '../../assets/Cloud-upload.png';
 import { requests } from '../../api/requests';
 import useFirebase from '../../hooks/useFirebase';
 
@@ -179,7 +179,7 @@ const CreateEventForm = () => {
                     </IconButton>
                     <Typography textAlign="center">Storage</Typography>
                   </Stack>
-                  <Stack>
+                  {/* <Stack>
                     <IconButton>
                       <img src={google} alt="google drive" />
                     </IconButton>
@@ -190,7 +190,7 @@ const CreateEventForm = () => {
                       <img src={cloud} alt="drop box" />
                     </IconButton>
                     <Typography textAlign="center">Drop Box</Typography>
-                  </Stack>
+                  </Stack> */}
                   <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
                 </Box>
               </Box>
@@ -293,7 +293,7 @@ const CreateEventForm = () => {
               <Typography sx={{ color: '#ABABAB', fontWeight: '400', fontSize: '1rem' }}>
                 Add the featured artists for this event
               </Typography>
-              <Box sx={{ height: 'auto', border: '1px solid #D1D0D0', borderRadius: '8px', mt: '1.5rem', p: '9px' }}>
+              <Box sx={{ height: 'auto', border: '1px solid #D1D0D0', borderRadius: '8px', mt: '1.5rem', p: '1rem' }}>
                 {artists.length <= 0 ? (
                   <Typography textAlign="center">No artist added yet</Typography>
                 ) : (
@@ -383,13 +383,12 @@ const CreateEventForm = () => {
                         }}
                         key={index}
                       >
-                        <Box sx={{ color: '#000', fontWeight: '400', fontSize: '1rem' }}>
+                        <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1rem', flex: 1 }}>
                           {ticket.type}
-                          <br />
+                        </Typography>
+                        <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1rem', flex: 1 }}>
                           {ticket.price}
-                          <br />
-                          {ticket.description}
-                        </Box>
+                        </Typography>
                         <IconButton onClick={() => handleRemoveTicket(index)}>
                           <CancelIcon />
                         </IconButton>
