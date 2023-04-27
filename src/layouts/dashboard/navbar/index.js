@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Stack, Drawer, Typography } from '@mui/material';
+import { Stack, Drawer, Typography, Button, Box, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
@@ -18,6 +20,7 @@ import NavSection from '../../../components/nav-section';
 import CollapseButton from './CollapseButton';
 import navConfig from './NavConfig';
 import logo from '../../../assets/dashboardLogo.png';
+import analytics from '../../../assets/google-analytics.png';
 
 // ----------------------------------------------------------------------
 
@@ -92,9 +95,29 @@ export default function DashboardNavbar({ isOpenSidebar, onCloseSidebar }) {
 
       <NavSection navConfig={navConfig} isCollapse={isCollapse} />
 
-      {/* <Box sx={{ flexGrow: 1 }} /> */}
-
+      <Box sx={{ flexGrow: 1 }} />
+      <ListItemButton>
+        <ListItemIcon>
+          <img src={analytics} alt="analytics" />
+        </ListItemIcon>
+        <ListItemText>Engagements</ListItemText>
+      </ListItemButton>
       {/* {!isCollapse && <LogoutButton />} */}
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', mb: '1.5rem', px: 2.5 }}>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          component={Link}
+          to="/dashboard/create-event"
+          sx={{
+            bgcolor: '#1358A5',
+            borderRadius: '30px',
+            boxShadow: '0px, 4px rgba(0, 0, 0, 0.25)',
+          }}
+        >
+          Create Event
+        </Button>
+      </Box>
     </Scrollbar>
   );
 

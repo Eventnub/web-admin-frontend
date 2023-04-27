@@ -10,7 +10,6 @@ import { getTime } from 'date-fns';
 import useFirebase from '../../../hooks/useFirebase';
 import { requests } from '../../../api/requests';
 import deleteIcon from '../../../assets/deleteIcon.png';
-import editIcon from '../../../assets/editIcon.png';
 
 export default function Quiz({ startDate, endDate }) {
   const [questions, setQuestions] = useState([]);
@@ -151,9 +150,6 @@ export default function Quiz({ startDate, endDate }) {
                       {question.question}
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <IconButton>
-                        <img src={editIcon} alt="edit" style={{ height: 20, width: 20 }} />
-                      </IconButton>
                       <IconButton onClick={() => handleRemoveQuestion(question.uid, index)}>
                         <img src={deleteIcon} alt="edit" style={{ height: 20, width: 20 }} />
                       </IconButton>

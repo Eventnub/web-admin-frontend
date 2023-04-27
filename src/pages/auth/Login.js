@@ -8,7 +8,15 @@ import LoginForm from '../../sections/auth/login/LoginForm';
 export default function LogIn() {
   return (
     <Box sx={{ height: '100%', width: '100%', display: 'flex' }}>
-      <Box sx={{ flex: 1.2, p: '2rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <Box
+        sx={{
+          flex: 1,
+          p: { xs: '2rem', lg: '4rem' },
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <img src={blueLogo} alt="logo" style={{ width: '60px' }} />
           <Typography sx={{ color: '#1358A5', fontWeight: '600', letterSpacing: '.2rem' }}>eventnub</Typography>
@@ -28,13 +36,14 @@ export default function LogIn() {
       </Box>
       <Box
         sx={{
-          flex: 1,
+          flex: 1.2,
           backgroundImage: `url(${bg})`,
           backgroundRepeat: 'no-repeat',
           position: 'relative',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
+          height: '100%',
           '&::before': {
             content: '""',
             display: 'block',

@@ -24,6 +24,13 @@ const navConfig = [
       { title: 'Archived', path: PATH_DASHBOARD.general.archived, icon: ICONS.archived },
     ],
   },
+  {
+    subheader: 'manage activities',
+    items: [
+      { title: 'Manage Games', path: '#', icon: '' },
+      { title: 'Audio Validation', path: '/dashboard/audio-validation', icon: '' },
+    ],
+  },
 ];
 
 export default navConfig;

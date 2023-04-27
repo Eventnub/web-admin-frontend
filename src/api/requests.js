@@ -39,4 +39,11 @@ export const requests = {
     axios.post(endpoints.createRaffleDraw, data, getJsonHeaderWithAuthToken(idToken)),
   createMusicMatch: (data, idToken) =>
     axios.post(endpoints.createMusicMatch, data, getMultipartHeaderWithAuthToken(idToken)),
+  getEventMusicMatch: (eventId, idToken) =>
+    axios.get(`${endpoints.getEventMusicMatch}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  deleteMusicMatch: (musicMatchId, idToken) =>
+    axios.delete(`${endpoints.deleteMusicMatch}/${musicMatchId}`, getJsonHeaderWithAuthToken(idToken)),
+  pendingValidations: (idToken) => axios.get(endpoints.pendingValidations, getJsonHeaderWithAuthToken(idToken)),
+  submitMusicMatchVAlidation: (data, idToken) =>
+    axios.post(endpoints.submitMusicMatchVAlidation, data, getJsonHeaderWithAuthToken(idToken)),
 };

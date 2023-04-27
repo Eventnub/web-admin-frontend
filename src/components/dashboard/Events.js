@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import filter from '../../assets/filter.png';
 
-export default function Events({ events, isLoading, handleFilterChange, title }) {
+export default function Events({ events, isLoading, title }) {
   const theme = useTheme();
 
   console.log(events);
@@ -18,7 +18,7 @@ export default function Events({ events, isLoading, handleFilterChange, title })
           </span>
         </Typography>
 
-        <TextField
+        {/* <TextField
           select
           sx={{ display: title === 'Recently Created' ? 'block' : 'none' }}
           InputProps={{
@@ -34,7 +34,7 @@ export default function Events({ events, isLoading, handleFilterChange, title })
           <MenuItem value="Created by Admin">Created by Admin</MenuItem>
           <MenuItem value="Created by User">Created by User</MenuItem>
           <MenuItem value="Unapproved Events">Unapproved Events</MenuItem>
-        </TextField>
+        </TextField> */}
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', mt: '2rem', gap: '5rem', height: 'auto' }}>
         {isLoading ? (
@@ -99,6 +99,6 @@ export default function Events({ events, isLoading, handleFilterChange, title })
 Events.propTypes = {
   events: PropTypes.array,
   isLoading: PropTypes.bool,
-  handleFilterChange: PropTypes.func,
+  // handleFilterChange: PropTypes.func,
   title: PropTypes.string,
 };
