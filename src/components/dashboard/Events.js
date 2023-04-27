@@ -1,8 +1,8 @@
 import React from 'react';
-import { Box, Typography, useTheme, CircularProgress, TextField, MenuItem, InputAdornment } from '@mui/material';
+import { Box, Typography, useTheme, CircularProgress } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import filter from '../../assets/filter.png';
+// import filter from '../../assets/filter.png';
 
 export default function Events({ events, isLoading, title }) {
   const theme = useTheme();
@@ -52,7 +52,7 @@ export default function Events({ events, isLoading, title }) {
                   height: '218px',
                   [theme.breakpoints.down('sm')]: { width: '100%', height: '50%' },
                 }}
-                key={item.uid}
+                key={Math.random()}
               >
                 <Box sx={{ height: '70%' }} component={Link} to={`/dashboard/event-details/${item.uid}`}>
                   <img
