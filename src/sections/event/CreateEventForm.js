@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Box, Typography, Button, styled, IconButton, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
@@ -27,6 +28,8 @@ const CreateEventForm = () => {
   const [artists, setArtists] = useState([]);
   const [currentArtist, setCurrentArtist] = useState('');
   const [tickets, setTickets] = useState([]);
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
   const [currentTicket, setCurrentTicket] = useState({
     type: '',
     price: '',
@@ -126,8 +129,8 @@ const CreateEventForm = () => {
           formData.append('date', eventDate);
           formData.append('time', time);
           formData.append('venue', venue);
-          formData.append('country', 'Nigeria');
-          formData.append('state', 'Lagos');
+          formData.append('country', country);
+          formData.append('state', state);
           formData.append('type', 'Paid');
           formData.append('photo', image);
           artists.forEach((artist, index) => {
@@ -255,6 +258,21 @@ const CreateEventForm = () => {
                   )}
                 </Field>
               </Box>
+            </Box>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', mt: '1rem', justifyContent: 'space-between', gap: '1rem' }}
+            >
+              <CountryDropdown
+                value={country}
+                onChange={(val) => setCountry(val)}
+                style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+              />
+              <RegionDropdown
+                country={country}
+                value={state}
+                onChange={(val) => setState(val)}
+                style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+              />
             </Box>
             <Field name="eventDescription">
               {({ field, form }) => (
