@@ -84,7 +84,7 @@ export default function MusicMatch() {
           artist: Yup.string().required('Artist is required'),
           lyrics: Yup.string().required('lyrics is required'),
         })}
-        onSubmit={async (values, { setSubmitting }) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           if (audio === null) {
             throw new Error('Audio was not selected');
           }
@@ -106,6 +106,7 @@ export default function MusicMatch() {
               },
             ]);
             setSubmitting(false);
+            resetForm();
           } catch (error) {
             console.log(error.request.responseText);
           }

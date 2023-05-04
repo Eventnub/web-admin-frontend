@@ -182,7 +182,6 @@ export default function ValidateAudioPage() {
           )}
         </Formik>
       </Box>
-      <Box mt="1.5rem" />
     </Box>
   );
 }

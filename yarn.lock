@@ -12261,6 +12261,11 @@
     "copy-to-clipboard" "^3"
     "prop-types" "^15.5.8"
 
+"react-country-region-selector@^3.6.1":
+  "integrity" "sha512-/hKRVFVxhsQKV6/csajd9uX4Lz6XHMVNtpKhMn/xGQtZDZrnsr+VeeeeXDooSn5cV0DFAk2eKk9c+otj7Hop9w=="
+  "resolved" "https://registry.npmjs.org/react-country-region-selector/-/react-country-region-selector-3.6.1.tgz"
+  "version" "3.6.1"
+
 "react-date-object@^2.1.5":
   "integrity" "sha512-iAtF2nz+jZjy3w36qKx2MsxXqbiL7UgGljz9jPjLWxWCl4rDTZUMS/i7hKKiVbL1lJlmubz1Xu6W3i6CW06kTg=="
   "resolved" "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.5.tgz"
