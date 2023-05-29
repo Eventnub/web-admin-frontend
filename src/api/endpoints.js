@@ -16,4 +16,7 @@ export const endpoints = {
   deleteMusicMatch: getFullUrl('music-unison'),
   pendingValidations: getFullUrl('music-unison/get-unreviewed-music-unison-submissions/all'),
   submitMusicMatchVAlidation: getFullUrl('music-unison/review-user-music-submission'),
+  getEventQuizResults: getFullUrl('questions/get-event-quiz-results'),
+  getEventRaffleDrawResults: getFullUrl('raffle-draws/get-event-raffle-draw-results'),
+  getEventMusicMatchResults: getFullUrl('music-unison/get-event-music-unison-results'),
 };

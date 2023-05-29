@@ -47,7 +47,6 @@ export default function AudioValidationPage() {
     }
     getPendingMusicMatchValidations();
   }, [user.idToken]);
-  console.log(pendingMusicMatchValidations);
 
   return (
     <Box sx={{ bgcolor: '#F4FAFB', height: '100%', width: '100%', pt: 3, pl: 1, pr: 2 }}>

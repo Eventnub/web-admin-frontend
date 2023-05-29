@@ -33,7 +33,6 @@ export default function ValidateAudioPage() {
     }
     getPendingMusicMatchValidations();
   }, [user.idToken, musicMatchSubmissionId]);
-  console.log(pendingMusicMatchValidation);
 
   return (
     <Box sx={{ height: '100%', width: '100%', bgcolor: '#fff', pt: 3, pl: 2, pr: 2, pb: '2rem' }}>

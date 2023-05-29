@@ -46,4 +46,10 @@ export const requests = {
   pendingValidations: (idToken) => axios.get(endpoints.pendingValidations, getJsonHeaderWithAuthToken(idToken)),
   submitMusicMatchVAlidation: (data, idToken) =>
     axios.post(endpoints.submitMusicMatchVAlidation, data, getJsonHeaderWithAuthToken(idToken)),
+  getEventQuizResults: (eventId, idToken) =>
+    axios.get(`${endpoints.getEventQuizResults}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  getEventRaffleDrawResults: (eventId, idToken) =>
+    axios.get(`${endpoints.getEventRaffleDrawResults}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  getEventMusicMatchResults: (eventId, idToken) =>
+    axios.get(`${endpoints.getEventMusicMatchResults}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
 };
