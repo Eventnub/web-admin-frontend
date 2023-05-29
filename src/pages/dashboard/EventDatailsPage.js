@@ -215,7 +215,7 @@ export default function EventDatailsPage() {
           <Text>Total fans</Text>
         </StyledBox>
       </Box>
-      <Engagements />
+      <Engagements eventId={eventId} />
       <RaffleDraw />
       <Quiz endDate={event.gameEndTimestamp} startDate={event.gameStartTimestamp} />
       <MusicMatch />
