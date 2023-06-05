@@ -38,6 +38,7 @@ const CreateEventForm = () => {
   const imageRef = useRef(null);
   const { user } = useFirebase();
   const navigate = useNavigate();
+
   const handleSelectImage = () => {
     imageRef.current.click();
   };
@@ -73,12 +74,6 @@ const CreateEventForm = () => {
     const resizedFile = await resizeFile(file);
     setImage(resizedFile);
 
-    // const fileExtension = path.extname(file.name);
-
-    // if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
-    //   setError(`Unsupported file format: ${fileExtension}`);
-    //   return null;
-    // }
     return null;
   };
 
@@ -172,17 +167,29 @@ const CreateEventForm = () => {
                   flex: '1',
                   border: '1px solid #A8A8A8',
                   py: '4rem',
+                  height: '100%',
+                  width: '100%',
                 }}
               >
-                <Typography textAlign="center">Upload Event Image</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Stack>
-                    <IconButton onClick={handleSelectImage}>
-                      <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
-                    </IconButton>
-                    <Typography textAlign="center">Storage</Typography>
-                  </Stack>
-                  {/* <Stack>
+                {image ? (
+                  <Box
+                    sx={{ height: '100%', width: '100%', cursor: 'pointer' }}
+                    onClick={handleSelectImage}
+                    component={'div'}
+                  >
+                    <img src={URL.createObjectURL(image)} alt="" />
+                  </Box>
+                ) : (
+                  <>
+                    <Typography textAlign="center">Upload Event Image</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <Stack>
+                        <IconButton onClick={handleSelectImage}>
+                          <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
+                        </IconButton>
+                        <Typography textAlign="center">Storage</Typography>
+                      </Stack>
+                      {/* <Stack>
                     <IconButton>
                       <img src={google} alt="google drive" />
                     </IconButton>
@@ -194,8 +201,10 @@ const CreateEventForm = () => {
                     </IconButton>
                     <Typography textAlign="center">Drop Box</Typography>
                   </Stack> */}
-                  <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
-                </Box>
+                      <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
+                    </Box>
+                  </>
+                )}
               </Box>
               <Box
                 sx={{

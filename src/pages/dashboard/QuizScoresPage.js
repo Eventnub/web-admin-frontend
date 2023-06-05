@@ -31,18 +31,41 @@ export default function QuizScoresPage() {
   const { eventId } = useParams();
   const { user } = useFirebase();
   const [quizResults, setQuizResults] = useState([]);
+  const [quizStatistics, setQuizStatistics] = useState({});
+  const [event, setEvent] = useState({});
+  const { totalPasses, totalFailures, totalTakes } = quizStatistics;
+  const formattedTotalTakes = totalTakes < 10 ? `0${totalTakes}` : totalTakes;
+  const formattedTotalPasses = totalPasses < 10 ? `0${totalPasses}` : totalPasses;
+  const formattedTotalFailures = totalPasses < 10 ? `0${totalFailures}` : totalFailures;
 
   useEffect(() => {
     async function getEventQuizResults() {
       try {
         const { data } = await requests.getEventQuizResults(eventId, user.idToken);
-        setQuizResults(data);
+        console.log(data);
+        setQuizResults(data.results);
+        setQuizStatistics(data.statistics);
       } catch (error) {
         console.log(error);
       }
     }
     getEventQuizResults();
   }, [user.idToken, eventId]);
+
+  useEffect(() => {
+    async function fetchEvent() {
+      try {
+        // setIsLoading(true);
+        const { data } = await requests.getEvent(eventId);
+        setEvent(data);
+        // setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchEvent();
+  }, [eventId]);
 
   return (
     <Box sx={{ bgcolor: '#F4FAFB', height: '100vh', width: '100%', pt: 3, pl: 1, pr: 2 }}>
@@ -52,20 +75,20 @@ export default function QuizScoresPage() {
       </Box>
       <Box mt={2}>
         <Typography sx={{ textTransform: 'capitalize', color: '#909090', fontWeight: '400', fontSize: '1rem' }}>
-          Canadian Festival
+          {event.name}
         </Typography>
         <Typography sx={{ color: '#000', fontWeight: 500, fontSize: '2.2rem' }}>Quiz Scores</Typography>
         <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
           <StyledBox>
-            <Number>1,000</Number>
+            <Number>{formattedTotalTakes}</Number>
             <Text>Total Quiz Taken</Text>
           </StyledBox>
           <StyledBox>
-            <Number>400</Number>
+            <Number>{formattedTotalPasses}</Number>
             <Text>Total Pass</Text>
           </StyledBox>
           <StyledBox>
-            <Number>600</Number>
+            <Number>{formattedTotalFailures}</Number>
             <Text>Total Fail </Text>
           </StyledBox>
         </Box>

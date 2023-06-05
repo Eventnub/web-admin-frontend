@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -13,18 +13,52 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
-// const data = [
-//   { game: 'Quiz', won: 20, lost: 31, totalPlay: 51 },
-//   { game: 'Raffle Draw', won: 120, lost: 20, totalPlay: 140 },
-//   { game: 'Music Match', won: 40, lost: 42, totalPlay: 82 },
-// ];
+import { requests } from '../../../api/requests';
+import useFirebase from '../../../hooks/useFirebase';
 
 const StyledLink = styled(Link)({
   textDecoration: 'none',
 });
 
 export default function Engagements({ eventId }) {
+  const [raffleDrawStatistics, setRaffleDrawStatistics] = useState({});
+  const [quizStatistics, setQuizStatistics] = useState({});
+  const { user } = useFirebase();
+  const { totalTakes, totalPasses, totalFailures } = raffleDrawStatistics;
+  const formattedTotalTakes = totalTakes < 10 ? `0${totalTakes}` : totalTakes;
+  const formattedTotalPasses = totalPasses < 10 ? `0${totalPasses}` : totalPasses;
+  const formattedTotalFailures = totalPasses < 10 ? `0${totalFailures}` : totalFailures;
+  const totalQuizTakes = quizStatistics.totalTakes;
+  const totalQuizPasses = quizStatistics.totalPasses;
+  const totalQuizFailures = quizStatistics.totalFailures;
+  const formattedTotalQuizTakes = totalQuizTakes < 10 ? `0${totalQuizTakes}` : totalQuizTakes;
+  const formattedTotalQuizPasses = totalQuizPasses < 10 ? `0${totalQuizPasses}` : totalQuizPasses;
+  const formattedTotalQuizFailures = totalQuizFailures < 10 ? `0${totalQuizFailures}` : totalQuizFailures;
+
+  useEffect(() => {
+    async function getEventRaffleDrawResults() {
+      try {
+        const { data } = await requests.getEventRaffleDrawResults(eventId, user.idToken);
+        setRaffleDrawStatistics(data.statistics);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getEventRaffleDrawResults();
+  }, [user.idToken, eventId]);
+
+  useEffect(() => {
+    async function getEventQuizResults() {
+      try {
+        const { data } = await requests.getEventQuizResults(eventId, user.idToken);
+        setQuizStatistics(data.statistics);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getEventQuizResults();
+  }, [user.idToken, eventId]);
+
   return (
     <Box sx={{ mt: '3rem', p: { xs: 0, md: '1rem' }, bgcolor: '#fff', borderRadius: '10px' }}>
       <Typography sx={{ color: '#000', fontWeight: '700', fontSize: '1.6rem' }}>Engagements</Typography>
@@ -64,30 +98,21 @@ export default function Engagements({ eventId }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {/* {data.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell>{row.game}</TableCell>
-                  <TableCell>{row.won}</TableCell>
-                  <TableCell>{row.lost}</TableCell>
-                  <TableCell>{row.totalPlay}</TableCell>
-                </TableRow>
-              ))} */}
-
               <TableRow>
                 <StyledLink to={`/dashboard/raffle-draw-results/${eventId}`}>
                   <TableCell>Raffle Draw</TableCell>
                 </StyledLink>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
+                <TableCell>{formattedTotalPasses}</TableCell>
+                <TableCell>{formattedTotalFailures}</TableCell>
+                <TableCell>{formattedTotalTakes}</TableCell>
               </TableRow>
               <TableRow>
                 <StyledLink to={`/dashboard/quiz-results/${eventId}`}>
                   <TableCell>Quiz</TableCell>
                 </StyledLink>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
+                <TableCell>{formattedTotalQuizPasses}</TableCell>
+                <TableCell>{formattedTotalQuizFailures}</TableCell>
+                <TableCell>{formattedTotalQuizTakes}</TableCell>
               </TableRow>
               <TableRow>
                 <StyledLink to={`/dashboard/music-match-results/${eventId}`}>
