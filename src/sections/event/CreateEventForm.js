@@ -39,6 +39,11 @@ const CreateEventForm = () => {
   const { user } = useFirebase();
   const navigate = useNavigate();
 
+  // For seatgeek event
+  const [searching, setSearching] = useState(false);
+  const [seatGeekEventId, setSeatGeekEventId] = useState('');
+  const [seatGeekEvent, setSeatGeekEvent] = useState(null);
+
   const handleSelectImage = () => {
     imageRef.current.click();
   };
@@ -68,6 +73,7 @@ const CreateEventForm = () => {
     });
     return null;
   };
+
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
@@ -93,17 +99,78 @@ const CreateEventForm = () => {
       );
     });
 
+  const handleChangeSeatGeekEventId = (e) => {
+    setSeatGeekEventId(e.target.value);
+  };
+
+  const getFileFromUrl = async (url, name, defaultType = 'image/jpeg') => {
+    const response = await fetch(url);
+    const data = await response.blob();
+    return new File([data], name, {
+      type: data.type || defaultType,
+    });
+  };
+
+  const handleFetchSeatGeekEvent = async () => {
+    if (!seatGeekEventId) return;
+    setSearching(true);
+    try {
+      const { data } = await requests.getSeatGeekEvent(seatGeekEventId, user.idToken);
+      setSeatGeekEvent(data);
+      // setCountry(data?.venue?.country);
+      // setState(data?.venue?.state);
+      if (data.performers.length > 0) {
+        const image = await getFileFromUrl(data.performers[0].image, 'photo.jpg');
+        setImage(image);
+        const artists = data.performers.map((d) => d.name);
+        setArtists(artists);
+      }
+    } catch (error) {
+      window.alert('Event with the specified ID was not found or something went wrong!');
+      console.log(error.message);
+    }
+    setSearching(false);
+  };
+
   return (
     <Box sx={{ width: '100%' }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontSize: '.8rem',
+          fontWeight: '400',
+        }}
+      >
+        Search events on seatgeek (Optional)
+      </Typography>
+      <Stack direction="row" sx={{ mb: 2 }}>
+        <TextField
+          type="text"
+          placeholder="Enter seatgeek's event ID"
+          value={seatGeekEventId}
+          onChange={handleChangeSeatGeekEventId}
+          sx={{ flexGrow: '1' }}
+        />
+        <LoadingButton
+          variant="contained"
+          type="button"
+          loading={searching}
+          onClick={handleFetchSeatGeekEvent}
+          sx={{ px: 2, background: '#FF6C2C', color: '#FFFFFF' }}
+        >
+          Search
+        </LoadingButton>
+      </Stack>
       <Formik
         initialValues={{
-          eventName: '',
+          eventName: seatGeekEvent?.title || '',
           host: '',
-          eventDate: '',
-          time: '',
-          venue: '',
-          eventDescription: '',
+          eventDate: seatGeekEvent?.datetime_utc || '',
+          time: seatGeekEvent?.datetime_utc || '',
+          venue: seatGeekEvent?.venue?.address || '',
+          eventDescription: seatGeekEvent?.description || '',
         }}
+        enableReinitialize
         validationSchema={Yup.object({
           eventName: Yup.string().min(2, 'Too short!').max(50, 'Too Long!').required('Event name required'),
           host: Yup.string().min(2, 'Too short!').max(50, 'Too Long!').required('Host required'),
