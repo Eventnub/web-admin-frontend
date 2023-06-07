@@ -29,7 +29,7 @@ const RaffleNumber = styled(Typography)({
   textAlign: 'center',
 });
 
-export default function DrawsTable({ raffleDrawResults }) {
+export default function RaffleDrawsTable({ raffleDrawResults }) {
   return (
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2, mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -115,6 +115,6 @@ export default function DrawsTable({ raffleDrawResults }) {
   );
 }
 
-DrawsTable.propTypes = {
+RaffleDrawsTable.propTypes = {
   raffleDrawResults: PropTypes.array,
 };

@@ -23,6 +23,7 @@ const StyledLink = styled(Link)({
 export default function Engagements({ eventId }) {
   const [raffleDrawStatistics, setRaffleDrawStatistics] = useState({});
   const [quizStatistics, setQuizStatistics] = useState({});
+  const [musicMatchStatistics, setMusicMatchStatistics] = useState({});
   const { user } = useFirebase();
   const { totalTakes, totalPasses, totalFailures } = raffleDrawStatistics;
   const formattedTotalTakes = totalTakes < 10 ? `0${totalTakes}` : totalTakes;
@@ -34,6 +35,13 @@ export default function Engagements({ eventId }) {
   const formattedTotalQuizTakes = totalQuizTakes < 10 ? `0${totalQuizTakes}` : totalQuizTakes;
   const formattedTotalQuizPasses = totalQuizPasses < 10 ? `0${totalQuizPasses}` : totalQuizPasses;
   const formattedTotalQuizFailures = totalQuizFailures < 10 ? `0${totalQuizFailures}` : totalQuizFailures;
+  const totalMusicMatchTakes = musicMatchStatistics.totalTakes;
+  const totalMusicMatchPasses = musicMatchStatistics.totalPasses;
+  const totalMusicMatchFailures = musicMatchStatistics.totalFailures;
+  const formattedTotalMusicMatchTakes = totalQuizTakes < 10 ? `0${totalMusicMatchTakes}` : totalMusicMatchTakes;
+  const formattedTotalMusicMatchPasses = totalQuizPasses < 10 ? `0${totalMusicMatchPasses}` : totalMusicMatchPasses;
+  const formattedTotalMusicMatchFailures =
+    totalQuizFailures < 10 ? `0${totalMusicMatchFailures}` : totalMusicMatchFailures;
 
   useEffect(() => {
     async function getEventRaffleDrawResults() {
@@ -59,6 +67,18 @@ export default function Engagements({ eventId }) {
     getEventQuizResults();
   }, [user.idToken, eventId]);
 
+  useEffect(() => {
+    async function getEventMusicMatchResults() {
+      try {
+        const { data } = await requests.getEventMusicMatchResults(eventId, user.idToken);
+        setMusicMatchStatistics(data.statistics);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getEventMusicMatchResults();
+  }, [user.idToken, eventId]);
+
   return (
     <Box sx={{ mt: '3rem', p: { xs: 0, md: '1rem' }, bgcolor: '#fff', borderRadius: '10px' }}>
       <Typography sx={{ color: '#000', fontWeight: '700', fontSize: '1.6rem' }}>Engagements</Typography>
@@ -74,15 +94,15 @@ export default function Engagements({ eventId }) {
       >
         <Stack>
           <Typography sx={{ color: '#515151', fontWeight: '600' }}>Total Views</Typography>
-          <Typography sx={{ color: '#000', fontWeight: '700' }}>15,456</Typography>
+          <Typography sx={{ color: '#000', fontWeight: '700' }}>00</Typography>
         </Stack>
         <Stack>
           <Typography sx={{ color: '#515151', fontWeight: '600' }}>Total tickets sold</Typography>
-          <Typography sx={{ color: '#000', fontWeight: '700' }}>145</Typography>
+          <Typography sx={{ color: '#000', fontWeight: '700' }}>00</Typography>
         </Stack>
         <Stack>
           <Typography sx={{ color: '#515151', fontWeight: '600' }}>Total tickets won</Typography>
-          <Typography sx={{ color: '#000', fontWeight: '700' }}>50</Typography>
+          <Typography sx={{ color: '#000', fontWeight: '700' }}>00</Typography>
         </Stack>
       </Box>
       <Box sx={{ mt: '2rem' }}>
@@ -118,9 +138,9 @@ export default function Engagements({ eventId }) {
                 <StyledLink to={`/dashboard/music-match-results/${eventId}`}>
                   <TableCell>Music Match</TableCell>
                 </StyledLink>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
-                <TableCell>00</TableCell>
+                <TableCell>{formattedTotalMusicMatchPasses}</TableCell>
+                <TableCell>{formattedTotalMusicMatchFailures}</TableCell>
+                <TableCell>{formattedTotalMusicMatchTakes}</TableCell>
               </TableRow>
             </TableBody>
           </Table>

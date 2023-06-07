@@ -5,7 +5,7 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import PreviousButton from '../../components/dashboard/PreviousButton';
 import UserProfile from '../../components/dashboard/UserProfile';
-import DrawsTable from '../../components/dashboard/manageGames/DrawsTable';
+import RaffleDrawsTable from '../../components/dashboard/manageGames/RaffleDrawsTable';
 import useFirebase from '../../hooks/useFirebase';
 import { requests } from '../../api/requests';
 
@@ -154,7 +154,7 @@ export default function RaffleScoresPage() {
           <Text>Failed Draws</Text>
         </StyledBox>
       </Box>
-      <DrawsTable raffleDrawResults={raffleDrawResults} />
+      <RaffleDrawsTable raffleDrawResults={raffleDrawResults} />
     </Box>
   );
 }

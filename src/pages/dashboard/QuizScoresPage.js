@@ -42,7 +42,6 @@ export default function QuizScoresPage() {
     async function getEventQuizResults() {
       try {
         const { data } = await requests.getEventQuizResults(eventId, user.idToken);
-        console.log(data);
         setQuizResults(data.results);
         setQuizStatistics(data.statistics);
       } catch (error) {

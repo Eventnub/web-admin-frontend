@@ -143,7 +143,7 @@ const CreateEventForm = () => {
       >
         Search events on seatgeek (Optional)
       </Typography>
-      <Stack direction="row" sx={{ mb: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <TextField
           type="text"
           placeholder="Enter seatgeek's event ID"
@@ -238,25 +238,15 @@ const CreateEventForm = () => {
                   width: '100%',
                 }}
               >
-                {image ? (
-                  <Box
-                    sx={{ height: '100%', width: '100%', cursor: 'pointer' }}
-                    onClick={handleSelectImage}
-                    component={'div'}
-                  >
-                    <img src={URL.createObjectURL(image)} alt="" />
-                  </Box>
-                ) : (
-                  <>
-                    <Typography textAlign="center">Upload Event Image</Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Stack>
-                        <IconButton onClick={handleSelectImage}>
-                          <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
-                        </IconButton>
-                        <Typography textAlign="center">Storage</Typography>
-                      </Stack>
-                      {/* <Stack>
+                <Typography textAlign="center">Upload Event Image</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Stack>
+                    <IconButton onClick={handleSelectImage}>
+                      <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
+                    </IconButton>
+                    <Typography textAlign="center">Storage</Typography>
+                  </Stack>
+                  {/* <Stack>
                     <IconButton>
                       <img src={google} alt="google drive" />
                     </IconButton>
@@ -268,10 +258,8 @@ const CreateEventForm = () => {
                     </IconButton>
                     <Typography textAlign="center">Drop Box</Typography>
                   </Stack> */}
-                      <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
-                    </Box>
-                  </>
-                )}
+                  <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
+                </Box>
               </Box>
               <Box
                 sx={{
@@ -376,7 +364,6 @@ const CreateEventForm = () => {
                 px: '1rem',
                 py: '1.5rem',
                 borderRadius: '10px',
-                // position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
               }}
