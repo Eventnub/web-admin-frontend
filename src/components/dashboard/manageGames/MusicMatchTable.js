@@ -11,6 +11,7 @@ import {
   AccordionSummary,
   Stack,
 } from '@mui/material';
+import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import play from '../../../assets/play.png';
 import wonIcon from '../../../assets/won.png';
@@ -23,62 +24,7 @@ const Text = styled(Typography)({
   fontSize: '.8rem',
 });
 
-const data = [
-  {
-    id: '01',
-    name: 'John Smith',
-    email: 'johnsmith@gmail.com',
-    number: '08063309447',
-    missedWords: '05',
-    game: 'Won',
-    lyrics:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-    wordsMissed: 'Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, deft, gyut',
-    percentageScore: '45%',
-    validator: 'John Smith',
-  },
-  {
-    id: '02',
-    name: 'John Smith',
-    email: 'johnsmith@gmail.com',
-    number: '08063309447',
-    missedWords: '10',
-    game: 'Lost',
-    lyrics:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-    wordsMissed: 'Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, deft, gyut',
-    percentageScore: '45%',
-    validator: 'John Smith',
-  },
-  {
-    id: '03',
-    name: 'John Smith',
-    email: 'johnsmith@gmail.com',
-    number: '08063309447',
-    missedWords: '29',
-    game: 'Won',
-    lyrics:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-    wordsMissed: 'Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, deft, gyut',
-    percentageScore: '45%',
-    validator: 'John Smith',
-  },
-  {
-    id: '04',
-    name: 'John Smith',
-    email: 'johnsmith@gmail.com',
-    number: '08063309447',
-    missedWords: '05',
-    game: 'Lost',
-    lyrics:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-    wordsMissed: 'Lorem, ipsum, dolor, sit, amet, consectetur, adipiscing, elit, deft, gyut',
-    percentageScore: '45%',
-    validator: 'John Smith',
-  },
-];
-
-export default function MusicMatchTable() {
+export default function MusicMatchTable({ musicMatchResults }) {
   return (
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2, mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -100,22 +46,21 @@ export default function MusicMatchTable() {
         </TextField>
       </Box>
       <Box sx={{ mt: 2 }}>
-        {data.map((item) => (
-          <Accordion sx={{ bgcolor: '#FAFAFA', mb: 1 }} key={item.id}>
+        {musicMatchResults.map((item, index) => (
+          <Accordion sx={{ bgcolor: '#FAFAFA', mb: 1 }} key={Math.random()}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
-              <Typography sx={{ color: '#000', fontWeight: '400' }}>{item.id}</Typography>
+              <Typography sx={{ color: '#000', fontWeight: '400' }}>{`${(index + 1)
+                .toString()
+                .padStart(2, '0')}`}</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', ml: 4, width: '100%' }}>
                 <Box sx={{ flex: 0.5 }}>
-                  <Text>{item.name}</Text>
+                  <Text>{`${item.user?.firstName} ${item.user?.lastName}`}</Text>
                 </Box>
-                <Box sx={{ flex: 1 }}>{item.email}</Box>
-                <Box sx={{ flex: 1 }}>
-                  <Text>{item.number}</Text>
-                </Box>
+                <Box sx={{ flex: 1 }}>{item.user.email}</Box>
                 <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', gap: '.5rem' }}>
                   <Text>Voice Recording</Text>
                   <img src={play} alt="play" />
-                </Box>{' '}
+                </Box>
                 <Box sx={{ flex: 0.5, display: 'flex', alignItems: 'center', gap: '.5rem' }}>
                   <Text>{item.game}</Text>
                   <img src={item.game === 'Won' ? wonIcon : failedIcon} alt={item.game} />
@@ -154,3 +99,7 @@ export default function MusicMatchTable() {
     </Box>
   );
 }
+
+MusicMatchTable.propTypes = {
+  musicMatchResults: PropTypes.array,
+};

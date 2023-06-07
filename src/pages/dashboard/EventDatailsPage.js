@@ -203,15 +203,15 @@ export default function EventDatailsPage() {
       </Box>
       <Box sx={{ display: 'flex', gap: '1.5rem', mt: '4rem' }}>
         <StyledBox>
-          <Number>$8,000</Number>
-          <Text>For 100 tickets sold</Text>
+          <Number>00</Number>
+          <Text>For 00 tickets sold</Text>
         </StyledBox>
         <StyledBox>
-          <Number>10k</Number>
+          <Number>00</Number>
           <Text>Impressions</Text>
         </StyledBox>
         <StyledBox>
-          <Number>1.5k</Number>
+          <Number>00</Number>
           <Text>Total fans</Text>
         </StyledBox>
       </Box>

@@ -80,12 +80,6 @@ const CreateEventForm = () => {
     const resizedFile = await resizeFile(file);
     setImage(resizedFile);
 
-    // const fileExtension = path.extname(file.name);
-
-    // if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
-    //   setError(`Unsupported file format: ${fileExtension}`);
-    //   return null;
-    // }
     return null;
   };
 
@@ -149,7 +143,7 @@ const CreateEventForm = () => {
       >
         Search events on seatgeek (Optional)
       </Typography>
-      <Stack direction="row" sx={{ mb: 2 }}>
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
         <TextField
           type="text"
           placeholder="Enter seatgeek's event ID"
@@ -240,6 +234,8 @@ const CreateEventForm = () => {
                   flex: '1',
                   border: '1px solid #A8A8A8',
                   py: '4rem',
+                  height: '100%',
+                  width: '100%',
                 }}
               >
                 <Typography textAlign="center">Upload Event Image</Typography>
@@ -368,7 +364,6 @@ const CreateEventForm = () => {
                 px: '1rem',
                 py: '1.5rem',
                 borderRadius: '10px',
-                // position: 'relative',
                 display: 'flex',
                 flexDirection: 'column',
               }}
