@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 
 export default function Events({ events, isLoading, title }) {
   const theme = useTheme();
+  const month = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
-  console.log(events);
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
@@ -69,11 +69,11 @@ export default function Events({ events, isLoading, title }) {
                 </Box>
                 <Box sx={{ display: 'flex', gap: '4%', height: 'auto', mt: '2%' }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography sx={{ fontWeight: '600', fontSize: '1.2rem', color: '#000', textAlign: 'center' }}>
-                      {item.day}
+                    <Typography sx={{ fontWeight: '600', fontSize: '.9rem', color: '#000', textAlign: 'center' }}>
+                      {item.date.substring(8)}
                     </Typography>
-                    <Typography sx={{ fontWeight: '400', fontSize: '.8rem', color: '#000', textAlign: 'center' }}>
-                      {item.month}
+                    <Typography sx={{ fontWeight: '400', fontSize: '.7rem', color: '#000', textAlign: 'center' }}>
+                      {month[Number(item.date.substring(5, 7)) - 1]}
                     </Typography>
                   </Box>
                   <Box>

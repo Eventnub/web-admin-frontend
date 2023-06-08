@@ -20,4 +20,5 @@ export const endpoints = {
   getEventRaffleDrawResults: getFullUrl('raffle-draws/get-event-raffle-draw-results'),
   getEventMusicMatchResults: getFullUrl('music-unison/get-event-music-unison-results'),
   getSeatGeekEvent: getFullUrl('seat-geek/get-event'),
+  getEventRaffleDraw: getFullUrl('raffle-draws/get-event-raffle-draw'),
 };

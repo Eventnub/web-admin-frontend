@@ -45,8 +45,6 @@ export default function MusicMatch() {
     audioRef.current.click();
   };
 
-  console.log(musicMatches);
-
   useEffect(() => {
     async function fetchEventMusicMatch() {
       try {
@@ -61,7 +59,6 @@ export default function MusicMatch() {
 
     fetchEventMusicMatch();
   }, [eventId, user.idToken]);
-  console.log({ musicMatches });
 
   return (
     <Box sx={{ mt: '4rem' }}>
