@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import path from 'path';
 import { Formik, Form, Field } from 'formik';
 import { TextField, Box, Typography, Button, styled, IconButton, Stack } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -44,6 +45,8 @@ const CreateEventForm = () => {
   const [seatGeekEventId, setSeatGeekEventId] = useState('');
   const [seatGeekEvent, setSeatGeekEvent] = useState(null);
 
+  const photoRef = useRef(null);
+
   const handleSelectImage = () => {
     imageRef.current.click();
   };
@@ -77,8 +80,21 @@ const CreateEventForm = () => {
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
+    const fileExtension = path.extname(file.name);
+    if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
+      window.alert(`Unsupported file format: ${fileExtension}`);
+      return null;
+    }
+
     const resizedFile = await resizeFile(file);
     setImage(resizedFile);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(resizedFile);
+    // eslint-disable-next-line
+    reader.onload = function (event) {
+      photoRef.current.style.backgroundImage = `url(${event.target.result})`;
+    };
 
     return null;
   };
@@ -231,6 +247,7 @@ const CreateEventForm = () => {
             <Box sx={{ display: 'flex', height: '250px', mt: '1rem', gap: '1rem' }}>
               <Box
                 sx={{
+                  position: 'relative',
                   flex: '1',
                   border: '1px solid #A8A8A8',
                   py: '4rem',
@@ -238,15 +255,30 @@ const CreateEventForm = () => {
                   width: '100%',
                 }}
               >
-                <Typography textAlign="center">Upload Event Image</Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Stack>
-                    <IconButton onClick={handleSelectImage}>
-                      <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
-                    </IconButton>
-                    <Typography textAlign="center">Storage</Typography>
-                  </Stack>
-                  {/* <Stack>
+                <div
+                  ref={photoRef}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundImage: "url('')",
+                    backgroundRepeat: 'no-repeat',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
+                />
+                <div>
+                  <Typography textAlign="center">Upload Event Image</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Stack>
+                      <IconButton onClick={handleSelectImage}>
+                        <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
+                      </IconButton>
+                      <Typography textAlign="center">Storage</Typography>
+                    </Stack>
+                    {/* <Stack>
                     <IconButton>
                       <img src={google} alt="google drive" />
                     </IconButton>
@@ -258,8 +290,9 @@ const CreateEventForm = () => {
                     </IconButton>
                     <Typography textAlign="center">Drop Box</Typography>
                   </Stack> */}
-                  <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
-                </Box>
+                    <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
+                  </Box>
+                </div>
               </Box>
               <Box
                 sx={{

@@ -1,4 +1,4 @@
-const BASE_URL = 'https://eventnub.onrender.com/api';
+const BASE_URL = 'https://globeventnub.herokuapp.com/api';
 
 const getFullUrl = (endpoint) => `${BASE_URL}/${endpoint}`;
 
