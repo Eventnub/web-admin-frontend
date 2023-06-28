@@ -116,7 +116,6 @@ export default function CreateEvent() {
 
     fetchEvents();
   }, [eventId]);
-  console.log(user.idToken);
 
   return (
     <Box sx={{ pt: 3, pl: 1, pr: 2, bgcolor: '#F4FAFB', height: '100%', width: '100%' }}>
@@ -177,7 +176,6 @@ export default function CreateEvent() {
               } catch (error) {
                 console.log(error.request.responseText);
               }
-              console.log(formData);
             }}
           >
             {({ isSubmitting }) => (
