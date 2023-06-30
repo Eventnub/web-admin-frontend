@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import path from 'path';
 import { TextField, Typography, Box, Button, styled, IconButton, Stack } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Resizer from 'react-image-file-resizer';
@@ -30,6 +32,8 @@ export default function CreateEvent() {
   const [artists, setArtists] = useState([]);
   const [currentArtist, setCurrentArtist] = useState('');
   const [tickets, setTickets] = useState([]);
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
   const [currentTicket, setCurrentTicket] = useState({
     type: '',
     price: '',
@@ -73,15 +77,14 @@ export default function CreateEvent() {
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
+    const fileExtension = path.extname(file.name);
+    if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
+      window.alert(`Unsupported file format: ${fileExtension}`);
+      return null;
+    }
+
     const resizedFile = await resizeFile(file);
     setImage(resizedFile);
-
-    // const fileExtension = path.extname(file.name);
-
-    // if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
-    //   setError(`Unsupported file format: ${fileExtension}`);
-    //   return null;
-    // }
     return null;
   };
 
@@ -108,6 +111,8 @@ export default function CreateEvent() {
         setEvent(data);
         setArtists(data.artists);
         setTickets(data.tickets);
+        setCountry(data.country);
+        setState(data.state);
         // setImage(data.photoUrl);
       } catch (error) {
         console.log(error);
@@ -155,8 +160,8 @@ export default function CreateEvent() {
               formData.append('date', eventDate);
               formData.append('time', time);
               formData.append('venue', venue);
-              formData.append('country', 'Nigeria');
-              formData.append('state', 'Lagos');
+              formData.append('country', country);
+              formData.append('state', state);
               formData.append('type', 'Paid');
               if (image !== null) {
                 formData.append('photo', image);
@@ -284,6 +289,27 @@ export default function CreateEvent() {
                       )}
                     </Field>
                   </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mt: '1rem',
+                    justifyContent: 'space-between',
+                    gap: '1rem',
+                  }}
+                >
+                  <CountryDropdown
+                    value={country}
+                    onChange={(val) => setCountry(val)}
+                    style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+                  />
+                  <RegionDropdown
+                    country={country}
+                    value={state}
+                    onChange={(val) => setState(val)}
+                    style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+                  />
                 </Box>
                 <Field name="eventDescription">
                   {({ field, form }) => (
