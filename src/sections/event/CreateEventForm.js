@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import path from 'path';
 import { Formik, Form, Field } from 'formik';
-import { TextField, Box, Typography, Button, styled, IconButton, Stack } from '@mui/material';
+import { TextField, Box, Typography, Button, styled, IconButton, Stack, InputAdornment } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -512,39 +512,38 @@ const CreateEventForm = () => {
                 )}
               </Box>
               <Box sx={{ display: 'flex', mt: '1rem', gap: '1rem' }}>
-                {/* <Field name="ticketType"> */}
-                {/* {({ field, form }) => ( */}
                 <StyledTextField
-                  // {...field}
                   variant="outlined"
                   placeholder="Ticket Type"
                   fullWidth
                   value={currentTicket.type}
                   onChange={(e) => setCurrentTicket((p) => ({ ...p, type: e.target.value }))}
-                  // error={form.errors.ticketType && form.touched.ticketType}
-                  // helperText={form.errors.ticketType}
                 />
-                {/* )}
-                </Field> */}
-                {/* <Field name="price">
-                  {({ field, form }) => ( */}
                 <StyledTextField
-                  // {...field}
                   variant="outlined"
                   placeholder="Price"
                   value={currentTicket.price}
                   onChange={(e) => setCurrentTicket((p) => ({ ...p, price: e.target.value }))}
                   fullWidth
-                  // error={form.errors.price && form.touched.price}
-                  // helperText={form.errors.price}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end" sx={{ cursor: 'pointer' }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
+                            color: 'grey.500',
+                            fontWeight: '300',
+                            mr: '0.5rem',
+                          }}
+                        >
+                          USD
+                        </Typography>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-                {/* )}
-                </Field> */}
               </Box>
-              {/* <Field name="ticketDescription">
-                {({ field, form }) => ( */}
               <StyledTextField
-                // {...field}
                 variant="outlined"
                 placeholder="Ticket Description"
                 value={currentTicket.description}
@@ -552,12 +551,8 @@ const CreateEventForm = () => {
                 fullWidth
                 multiline
                 rows={3}
-                // error={form.errors.ticketDescription && form.touched.ticketDescription}
-                // helperText={form.errors.ticketDescription}
                 sx={{ mt: '1rem' }}
               />
-              {/* )}
-              </Field> */}
               <Button
                 variant="contained"
                 startIcon={<AddIcon />}

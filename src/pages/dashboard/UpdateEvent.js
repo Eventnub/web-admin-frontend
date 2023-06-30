@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { TextField, Typography, Box, Button, styled, IconButton, Stack } from '@mui/material';
+import path from 'path';
+import { TextField, Typography, Box, Button, styled, IconButton, Stack, InputAdornment } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import AddIcon from '@mui/icons-material/Add';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
 import Resizer from 'react-image-file-resizer';
@@ -30,6 +32,8 @@ export default function CreateEvent() {
   const [artists, setArtists] = useState([]);
   const [currentArtist, setCurrentArtist] = useState('');
   const [tickets, setTickets] = useState([]);
+  const [country, setCountry] = useState('');
+  const [state, setState] = useState('');
   const [currentTicket, setCurrentTicket] = useState({
     type: '',
     price: '',
@@ -39,6 +43,8 @@ export default function CreateEvent() {
   const imageRef = useRef(null);
   const { user } = useFirebase();
   const navigate = useNavigate();
+
+  const photoRef = useRef(null);
 
   const handleSelectImage = () => {
     imageRef.current.click();
@@ -73,15 +79,22 @@ export default function CreateEvent() {
   const handleImageChange = async (e) => {
     if (!e.target.files.length) return null;
     const file = e.target.files[0];
+    const fileExtension = path.extname(file.name);
+    if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
+      window.alert(`Unsupported file format: ${fileExtension}`);
+      return null;
+    }
+
     const resizedFile = await resizeFile(file);
     setImage(resizedFile);
 
-    // const fileExtension = path.extname(file.name);
+    const reader = new FileReader();
+    reader.readAsDataURL(resizedFile);
+    // eslint-disable-next-line
+    reader.onload = function (event) {
+      photoRef.current.style.backgroundImage = `url(${event.target.result})`;
+    };
 
-    // if (!['.jpg', '.jpeg', '.png'].includes(fileExtension.toLowerCase())) {
-    //   setError(`Unsupported file format: ${fileExtension}`);
-    //   return null;
-    // }
     return null;
   };
 
@@ -108,7 +121,9 @@ export default function CreateEvent() {
         setEvent(data);
         setArtists(data.artists);
         setTickets(data.tickets);
-        // setImage(data.photoUrl);
+        setCountry(data.country);
+        setState(data.state);
+        photoRef.current.style.backgroundImage = `url(${data.photoUrl})`;
       } catch (error) {
         console.log(error);
       }
@@ -155,8 +170,8 @@ export default function CreateEvent() {
               formData.append('date', eventDate);
               formData.append('time', time);
               formData.append('venue', venue);
-              formData.append('country', 'Nigeria');
-              formData.append('state', 'Lagos');
+              formData.append('country', country);
+              formData.append('state', state);
               formData.append('type', 'Paid');
               if (image !== null) {
                 formData.append('photo', image);
@@ -195,20 +210,38 @@ export default function CreateEvent() {
                 <Box sx={{ display: 'flex', height: '250px', mt: '1rem', gap: '1rem' }}>
                   <Box
                     sx={{
+                      position: 'relative',
                       flex: '1',
                       border: '1px solid #A8A8A8',
                       py: '4rem',
+                      height: '100%',
+                      width: '100%',
                     }}
                   >
-                    <Typography textAlign="center">Upload Event Image</Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Stack>
-                        <IconButton onClick={handleSelectImage}>
-                          <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
-                        </IconButton>
-                        <Typography textAlign="center">Storage</Typography>
-                      </Stack>
-                      {/* <Stack>
+                    <div
+                      ref={photoRef}
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        backgroundImage: "url('')",
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                      }}
+                    />
+                    <div>
+                      <Typography textAlign="center">Upload Event Image</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Stack>
+                          <IconButton onClick={handleSelectImage}>
+                            <img src={storage} alt="local storage" style={{ height: '57px', width: '57px' }} />
+                          </IconButton>
+                          <Typography textAlign="center">Storage</Typography>
+                        </Stack>
+                        {/* <Stack>
                         <IconButton>
                           <img src={google} alt="google drive" />
                         </IconButton>
@@ -220,8 +253,9 @@ export default function CreateEvent() {
                         </IconButton>
                         <Typography textAlign="center">Drop Box</Typography>
                       </Stack> */}
-                      <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
-                    </Box>
+                        <input type="file" style={{ display: 'none' }} ref={imageRef} onChange={handleImageChange} />
+                      </Box>
+                    </div>
                   </Box>
                   <Box
                     sx={{
@@ -284,6 +318,27 @@ export default function CreateEvent() {
                       )}
                     </Field>
                   </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mt: '1rem',
+                    justifyContent: 'space-between',
+                    gap: '1rem',
+                  }}
+                >
+                  <CountryDropdown
+                    value={country}
+                    onChange={(val) => setCountry(val)}
+                    style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+                  />
+                  <RegionDropdown
+                    country={country}
+                    value={state}
+                    onChange={(val) => setState(val)}
+                    style={{ flex: 1, height: '56px', background: '#F4FAFB', borderRadius: '4px' }}
+                  />
                 </Box>
                 <Field name="eventDescription">
                   {({ field, form }) => (
@@ -435,39 +490,38 @@ export default function CreateEvent() {
                     )}
                   </Box>
                   <Box sx={{ display: 'flex', mt: '1rem', gap: '1rem' }}>
-                    {/* <Field name="ticketType"> */}
-                    {/* {({ field, form }) => ( */}
                     <StyledTextField
-                      // {...field}
                       variant="outlined"
                       placeholder="Ticket Type"
                       fullWidth
                       value={currentTicket.type}
                       onChange={(e) => setCurrentTicket((p) => ({ ...p, type: e.target.value }))}
-                      // error={form.errors.ticketType && form.touched.ticketType}
-                      // helperText={form.errors.ticketType}
                     />
-                    {/* )}
-                </Field> */}
-                    {/* <Field name="price">
-                  {({ field, form }) => ( */}
                     <StyledTextField
-                      // {...field}
                       variant="outlined"
                       placeholder="Price"
                       value={currentTicket.price}
                       onChange={(e) => setCurrentTicket((p) => ({ ...p, price: e.target.value }))}
                       fullWidth
-                      // error={form.errors.price && form.touched.price}
-                      // helperText={form.errors.price}
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end" sx={{ cursor: 'pointer' }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{
+                                color: 'grey.500',
+                                fontWeight: '300',
+                                mr: '0.5rem',
+                              }}
+                            >
+                              USD
+                            </Typography>
+                          </InputAdornment>
+                        ),
+                      }}
                     />
-                    {/* )}
-                </Field> */}
                   </Box>
-                  {/* <Field name="ticketDescription">
-                {({ field, form }) => ( */}
                   <StyledTextField
-                    // {...field}
                     variant="outlined"
                     placeholder="Ticket Description"
                     value={currentTicket.description}
@@ -475,12 +529,8 @@ export default function CreateEvent() {
                     fullWidth
                     multiline
                     rows={3}
-                    // error={form.errors.ticketDescription && form.touched.ticketDescription}
-                    // helperText={form.errors.ticketDescription}
                     sx={{ mt: '1rem' }}
                   />
-                  {/* )}
-              </Field> */}
                   <Button
                     variant="contained"
                     startIcon={<AddIcon />}
