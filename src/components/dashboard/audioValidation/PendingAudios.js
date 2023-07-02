@@ -21,7 +21,7 @@ const Text = styled(Typography)({
   fontSize: '.8rem',
 });
 
-export default function PendingAudio({ loading, pendingMusicMatchValidations }) {
+export default function PendingAudio({ loading, unvalidatedMusicMatchSubmissions }) {
   if (loading) {
     return (
       <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
@@ -33,7 +33,7 @@ export default function PendingAudio({ loading, pendingMusicMatchValidations }) 
     );
   }
 
-  if (pendingMusicMatchValidations.length === 0) {
+  if (unvalidatedMusicMatchSubmissions.length === 0) {
     return (
       <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Pending Audios</Typography>
@@ -50,7 +50,7 @@ export default function PendingAudio({ loading, pendingMusicMatchValidations }) 
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
       <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Pending Audios</Typography>
       <Box sx={{ mt: 2 }}>
-        {pendingMusicMatchValidations.map((item) => (
+        {unvalidatedMusicMatchSubmissions.map((item) => (
           <Accordion sx={{ bgcolor: '#FAFAFA', mb: 1 }} key={Math.random()}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
               <Typography sx={{ color: '#000', fontWeight: '400' }}>{item.id}</Typography>
@@ -108,5 +108,5 @@ export default function PendingAudio({ loading, pendingMusicMatchValidations }) 
 
 PendingAudio.propTypes = {
   loading: PropTypes.bool,
-  pendingMusicMatchValidations: PropTypes.array,
+  unvalidatedMusicMatchSubmissions: PropTypes.array,
 };

@@ -33,23 +33,23 @@ const StyledLink = styled(Link)({
 });
 
 export default function PendingValidationsPage() {
-  const [pendingMusicMatchValidations, setPendingMusicMatchValidations] = useState([]);
+  const [unvalidatedMusicMatchSubmissions, setUnvalidatedMusicMatchSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useFirebase();
 
   useEffect(() => {
-    async function getPendingMusicMatchValidations() {
+    async function fetchUnvalidatedMusicMatchSubmissions() {
       setLoading(true);
       try {
         const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken);
-        setPendingMusicMatchValidations(data);
+        setUnvalidatedMusicMatchSubmissions(data);
       } catch (error) {
         console.log(error);
       }
       setLoading(false);
     }
 
-    getPendingMusicMatchValidations();
+    fetchUnvalidatedMusicMatchSubmissions();
   }, [user.idToken]);
 
   return (
@@ -64,7 +64,7 @@ export default function PendingValidationsPage() {
           <Text>Audios Validated</Text>
         </StyledBox>
         <StyledBox component={StyledLink} to="/dashboard/pending-validations">
-          <Number>{pendingMusicMatchValidations.length}</Number>
+          <Number>{unvalidatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Pending</Text>
         </StyledBox>
         <StyledBox>
@@ -79,7 +79,7 @@ export default function PendingValidationsPage() {
       <Box sx={{ mt: 5 }}>
         <SearchBar />
       </Box>
-      <PendingAudios loading={loading} pendingMusicMatchValidations={pendingMusicMatchValidations} />
+      <PendingAudios loading={loading} unvalidatedMusicMatchSubmissions={unvalidatedMusicMatchSubmissions} />
     </Box>
   );
 }
