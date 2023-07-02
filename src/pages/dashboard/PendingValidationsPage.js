@@ -33,6 +33,7 @@ const StyledLink = styled(Link)({
 });
 
 export default function PendingValidationsPage() {
+  const [validatedMusicMatchSubmissions, setValidatedMusicMatchSubmissions] = useState([]);
   const [unvalidatedMusicMatchSubmissions, setUnvalidatedMusicMatchSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useFirebase();
@@ -41,8 +42,12 @@ export default function PendingValidationsPage() {
     async function fetchUnvalidatedMusicMatchSubmissions() {
       setLoading(true);
       try {
-        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken);
-        setUnvalidatedMusicMatchSubmissions(data);
+        const [validatedSubmissions, unvalidatedSubmissions] = await Promise.all([
+          requests.getValidatedMusicMatchSubmissions(user.idToken),
+          requests.getUnvalidatedMusicMatchSubmissions(user.idToken),
+        ]);
+        setValidatedMusicMatchSubmissions(validatedSubmissions.data);
+        setUnvalidatedMusicMatchSubmissions(unvalidatedSubmissions.data);
       } catch (error) {
         console.log(error);
       }
@@ -60,7 +65,7 @@ export default function PendingValidationsPage() {
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', mt: 5 }}>
         <StyledBox component={StyledLink} to="/dashboard/audio-validation">
-          <Number>10,000</Number>
+          <Number>{validatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Validated</Text>
         </StyledBox>
         <StyledBox component={StyledLink} to="/dashboard/pending-validations">
@@ -68,11 +73,11 @@ export default function PendingValidationsPage() {
           <Text>Audios Pending</Text>
         </StyledBox>
         <StyledBox>
-          <Number>1,000</Number>
+          <Number>0</Number>
           <Text>Pending Validators</Text>
         </StyledBox>
         <StyledBox>
-          <Number>10</Number>
+          <Number>0</Number>
           <Text>Validator Applications</Text>
         </StyledBox>
       </Box>
