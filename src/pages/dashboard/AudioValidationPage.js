@@ -34,6 +34,7 @@ const StyledLink = styled(Link)({
 
 export default function AudioValidationPage() {
   const [validatedMusicMatchSubmissions, setValidatedMusicMatchSubmissions] = useState([]);
+  const [unvalidatedMusicMatchSubmissions, setUnvalidatedMusicMatchSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useFirebase();
 
@@ -41,14 +42,18 @@ export default function AudioValidationPage() {
     async function fetchValidatedMusicMatchSubmissions() {
       setLoading(true);
       try {
-        const { data } = await requests.getValidatedMusicMatchSubmissions(user.idToken);
-        setValidatedMusicMatchSubmissions(data);
+        const [validatedSubmissions, unvalidatedSubmissions] = await Promise.all([
+          requests.getValidatedMusicMatchSubmissions(user.idToken),
+          requests.getUnvalidatedMusicMatchSubmissions(user.idToken),
+        ]);
+        setValidatedMusicMatchSubmissions(validatedSubmissions.data);
+        setUnvalidatedMusicMatchSubmissions(unvalidatedSubmissions.data);
       } catch (error) {
         console.log(error);
       }
       setLoading(false);
     }
-    
+
     fetchValidatedMusicMatchSubmissions();
   }, [user.idToken]);
 
@@ -60,19 +65,19 @@ export default function AudioValidationPage() {
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', mt: 5 }}>
         <StyledBox component={StyledLink} to="/dashboard/audio-validation">
-          <Number>10,000</Number>
+          <Number>{validatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Validated</Text>
         </StyledBox>
         <StyledBox component={StyledLink} to="/dashboard/pending-validations">
-          <Number>5,000</Number>
+          <Number>{unvalidatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Pending</Text>
         </StyledBox>
         <StyledBox>
-          <Number>1,000</Number>
+          <Number>0</Number>
           <Text>Pending Validators</Text>
         </StyledBox>
         <StyledBox>
-          <Number>10</Number>
+          <Number>0</Number>
           <Text>Validator Applications</Text>
         </StyledBox>
       </Box>

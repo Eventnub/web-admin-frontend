@@ -33,23 +33,28 @@ const StyledLink = styled(Link)({
 });
 
 export default function PendingValidationsPage() {
-  const [pendingMusicMatchValidations, setPendingMusicMatchValidations] = useState([]);
+  const [validatedMusicMatchSubmissions, setValidatedMusicMatchSubmissions] = useState([]);
+  const [unvalidatedMusicMatchSubmissions, setUnvalidatedMusicMatchSubmissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user } = useFirebase();
 
   useEffect(() => {
-    async function getPendingMusicMatchValidations() {
+    async function fetchUnvalidatedMusicMatchSubmissions() {
       setLoading(true);
       try {
-        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken);
-        setPendingMusicMatchValidations(data);
+        const [validatedSubmissions, unvalidatedSubmissions] = await Promise.all([
+          requests.getValidatedMusicMatchSubmissions(user.idToken),
+          requests.getUnvalidatedMusicMatchSubmissions(user.idToken),
+        ]);
+        setValidatedMusicMatchSubmissions(validatedSubmissions.data);
+        setUnvalidatedMusicMatchSubmissions(unvalidatedSubmissions.data);
       } catch (error) {
         console.log(error);
       }
       setLoading(false);
     }
 
-    getPendingMusicMatchValidations();
+    fetchUnvalidatedMusicMatchSubmissions();
   }, [user.idToken]);
 
   return (
@@ -60,26 +65,26 @@ export default function PendingValidationsPage() {
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', mt: 5 }}>
         <StyledBox component={StyledLink} to="/dashboard/audio-validation">
-          <Number>10,000</Number>
+          <Number>{validatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Validated</Text>
         </StyledBox>
         <StyledBox component={StyledLink} to="/dashboard/pending-validations">
-          <Number>{pendingMusicMatchValidations.length}</Number>
+          <Number>{unvalidatedMusicMatchSubmissions.length}</Number>
           <Text>Audios Pending</Text>
         </StyledBox>
         <StyledBox>
-          <Number>1,000</Number>
+          <Number>0</Number>
           <Text>Pending Validators</Text>
         </StyledBox>
         <StyledBox>
-          <Number>10</Number>
+          <Number>0</Number>
           <Text>Validator Applications</Text>
         </StyledBox>
       </Box>
       <Box sx={{ mt: 5 }}>
         <SearchBar />
       </Box>
-      <PendingAudios loading={loading} pendingMusicMatchValidations={pendingMusicMatchValidations} />
+      <PendingAudios loading={loading} unvalidatedMusicMatchSubmissions={unvalidatedMusicMatchSubmissions} />
     </Box>
   );
 }
