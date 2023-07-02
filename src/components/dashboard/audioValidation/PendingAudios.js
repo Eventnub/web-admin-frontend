@@ -1,5 +1,15 @@
 import React from 'react';
-import { Box, Typography, Accordion, AccordionDetails, AccordionSummary, styled, Stack, Button } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  styled,
+  Stack,
+  Button,
+  CircularProgress,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -11,7 +21,31 @@ const Text = styled(Typography)({
   fontSize: '.8rem',
 });
 
-export default function PendingAudio({ pendingMusicMatchValidations }) {
+export default function PendingAudio({ loading, pendingMusicMatchValidations }) {
+  if (loading) {
+    return (
+      <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
+        <Typography sx={{ olor: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Validated Audios</Typography>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mt: 2 }}>
+          <CircularProgress />
+        </Box>
+      </Box>
+    );
+  }
+
+  if (pendingMusicMatchValidations.length === 0) {
+    return (
+      <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
+        <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Pending Audios</Typography>
+        <Box sx={{ mt: 2 }}>
+          <Typography sx={{ color: 'grey.600', fontWeight: '400', fontSize: '.9rem', textAlign: 'center' }}>
+            There are no unvalidated submissions
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2 }}>
       <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Pending Audios</Typography>
@@ -73,5 +107,6 @@ export default function PendingAudio({ pendingMusicMatchValidations }) {
 }
 
 PendingAudio.propTypes = {
+  loading: PropTypes.bool,
   pendingMusicMatchValidations: PropTypes.array,
 };

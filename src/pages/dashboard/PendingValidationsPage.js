@@ -32,19 +32,23 @@ const StyledLink = styled(Link)({
   textDecoration: 'none',
 });
 
-export default function AudioValidationPage() {
+export default function PendingValidationsPage() {
   const [pendingMusicMatchValidations, setPendingMusicMatchValidations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useFirebase();
 
   useEffect(() => {
     async function getPendingMusicMatchValidations() {
+      setLoading(true);
       try {
-        const { data } = await requests.pendingValidations(user.idToken);
+        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken);
         setPendingMusicMatchValidations(data);
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
+
     getPendingMusicMatchValidations();
   }, [user.idToken]);
 
@@ -75,7 +79,7 @@ export default function AudioValidationPage() {
       <Box sx={{ mt: 5 }}>
         <SearchBar />
       </Box>
-      <PendingAudios pendingMusicMatchValidations={pendingMusicMatchValidations} />
+      <PendingAudios loading={loading} pendingMusicMatchValidations={pendingMusicMatchValidations} />
     </Box>
   );
 }

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 import SearchBar from '../../components/dashboard/SearchBar';
 import UserProfile from '../../components/dashboard/UserProfile';
 import PageTitle from '../../components/dashboard/PageTitle';
 import ValidatedAudio from '../../components/dashboard/audioValidation/ValidatedAudio';
+import { requests } from '../../api/requests';
+import useFirebase from '../../hooks/useFirebase';
 
 const StyledBox = styled(Box)({
   flex: 1,
@@ -29,7 +31,27 @@ const Text = styled(Typography)({
 const StyledLink = styled(Link)({
   textDecoration: 'none',
 });
+
 export default function AudioValidationPage() {
+  const [validatedMusicMatchSubmissions, setValidatedMusicMatchSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { user } = useFirebase();
+
+  useEffect(() => {
+    async function fetchValidatedMusicMatchSubmissions() {
+      setLoading(true);
+      try {
+        const { data } = await requests.getValidatedMusicMatchSubmissions(user.idToken);
+        setValidatedMusicMatchSubmissions(data);
+      } catch (error) {
+        console.log(error);
+      }
+      setLoading(false);
+    }
+    
+    fetchValidatedMusicMatchSubmissions();
+  }, [user.idToken]);
+
   return (
     <Box sx={{ bgcolor: '#F4FAFB', height: '100%', width: '100%', pt: 3, pl: 1, pr: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -57,7 +79,7 @@ export default function AudioValidationPage() {
       <Box sx={{ mt: 5 }}>
         <SearchBar />
       </Box>
-      <ValidatedAudio />
+      <ValidatedAudio loading={loading} validatedMusicMatchSubmissions={validatedMusicMatchSubmissions} />
     </Box>
   );
 }

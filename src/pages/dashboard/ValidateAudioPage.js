@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Box, Divider, Slider, Stack, Typography, TextField } from '@mui/material';
 import { Formik, Form, Field } from 'formik';
 import { LoadingButton } from '@mui/lab';
@@ -14,6 +14,7 @@ export default function ValidateAudioPage() {
   const audioRef = useRef(null);
   const [, setSpeed] = useState(1);
   const { musicMatchSubmissionId } = useParams();
+  const navigate = useNavigate();
   const { user } = useFirebase();
 
   const handleSpeedChange = (event) => {
@@ -24,7 +25,7 @@ export default function ValidateAudioPage() {
   useEffect(() => {
     async function getPendingMusicMatchValidations() {
       try {
-        const { data } = await requests.pendingValidations(user.idToken);
+        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken); 
         const [musicMatch] = data.filter((item) => (item.uid = musicMatchSubmissionId));
         setPendingMusicMatchValidation(musicMatch);
       } catch (error) {
@@ -53,23 +54,12 @@ export default function ValidateAudioPage() {
       >
         <Typography sx={{ color: '#000', fontWeight: '600' }}>Recorded Audio</Typography>
         <Box sx={{ mt: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          {/* <Box
-            sx={{
-              bgcolor: '#fff',
-              height: '30%',
-              borderRadius: '12px',
-              boxShadow: ' 0px 2px 4px rgba(0, 0, 0, 0.25)',
-              p: '.5rem',
-            }}
-          > */}
           {pendingMusicMatchValidation && (
             <audio controls ref={audioRef}>
               <source src={pendingMusicMatchValidation.audioUrl} type="audio/mp3" />
               <track src="thg.vtt" kind="captions" label="English" />
             </audio>
           )}
-
-          {/* </Box> */}
           <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1.5rem' }}>
             {pendingMusicMatchValidation?.musicUnison.songTitle} by{' '}
             {pendingMusicMatchValidation?.musicUnison.songArtist}
@@ -140,6 +130,7 @@ export default function ValidateAudioPage() {
               await requests.submitMusicMatchVAlidation(data, user.idToken);
               setSubmitting(false);
               resetForm();
+              navigate('/dashboard/audio-validation');
             } catch (error) {
               console.log(error);
             }
@@ -164,9 +155,6 @@ export default function ValidateAudioPage() {
               </Field>
               <Box sx={{ mt: '1.5rem', display: 'flex', justifyContent: 'flex-end', mb: '1.5rem' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
-                  {/* <Button variant="contained" sx={{ bgcolor: '#ABABAB', boxShadow: 'none' }}>
-                    Cancel Validation
-                  </Button> */}
                   <LoadingButton
                     variant="contained"
                     type="submit"
