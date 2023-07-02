@@ -43,7 +43,10 @@ export const requests = {
     axios.get(`${endpoints.getEventMusicMatch}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
   deleteMusicMatch: (musicMatchId, idToken) =>
     axios.delete(`${endpoints.deleteMusicMatch}/${musicMatchId}`, getJsonHeaderWithAuthToken(idToken)),
-  pendingValidations: (idToken) => axios.get(endpoints.pendingValidations, getJsonHeaderWithAuthToken(idToken)),
+  getValidatedMusicMatchSubmissions: (idToken) =>
+    axios.get(endpoints.getValidatedMusicMatchSubmissions, getJsonHeaderWithAuthToken(idToken)),
+  getUnvalidatedMusicMatchSubmissions: (idToken) =>
+    axios.get(endpoints.getUnvalidatedMusicMatchSubmissions, getJsonHeaderWithAuthToken(idToken)),
   submitMusicMatchVAlidation: (data, idToken) =>
     axios.post(endpoints.submitMusicMatchVAlidation, data, getJsonHeaderWithAuthToken(idToken)),
   getEventQuizResults: (eventId, idToken) =>
