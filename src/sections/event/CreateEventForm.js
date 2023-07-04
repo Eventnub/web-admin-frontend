@@ -545,7 +545,7 @@ const CreateEventForm = () => {
               </Box>
               <StyledTextField
                 variant="outlined"
-                placeholder="Ticket Description"
+                placeholder="Seat Map URL"
                 value={currentTicket.description}
                 onChange={(e) => setCurrentTicket((p) => ({ ...p, description: e.target.value }))}
                 fullWidth
