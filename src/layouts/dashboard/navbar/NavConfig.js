@@ -27,7 +27,7 @@ const navConfig = [
   {
     subheader: 'manage activities',
     items: [
-      { title: 'Manage Games', path: '#', icon: '' },
+      { title: 'Manage Games', path: '/dashboard/manage-games', icon: '' },
       { title: 'Audio Validation', path: '/dashboard/audio-validation', icon: '' },
     ],
   },

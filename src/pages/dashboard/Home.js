@@ -26,6 +26,7 @@ const Text = styled(Typography)({
   fontWeight: '400',
   fontSize: '.9rem',
 });
+
 export default function Home() {
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
