@@ -1,10 +1,14 @@
 import React from 'react';
-import { Box, Typography, useTheme, CircularProgress } from '@mui/material';
+import { Box, Typography, useTheme, CircularProgress, Stack, Button, styled } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import filter from '../../assets/filter.png';
 
-export default function Events({ events, isLoading, title }) {
+const GameButton = styled(Button)({
+  textAlign: 'center',
+  fontWeight: '400',
+});
+
+export default function Events({ events, isLoading, title, baseLink }) {
   const theme = useTheme();
   const month = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -17,24 +21,6 @@ export default function Events({ events, isLoading, title }) {
             {events.length < 10 ? `0${events.length}` : events.length}
           </span>
         </Typography>
-
-        {/* <TextField
-          select
-          sx={{ display: title === 'Recently Created' ? 'block' : 'none' }}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <img src={filter} alt="filter" />
-              </InputAdornment>
-            ),
-          }}
-          onChange={handleFilterChange}
-        >
-          <MenuItem value="All">All</MenuItem>
-          <MenuItem value="Created by Admin">Created by Admin</MenuItem>
-          <MenuItem value="Created by User">Created by User</MenuItem>
-          <MenuItem value="Unapproved Events">Unapproved Events</MenuItem>
-        </TextField> */}
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', mt: '2rem', gap: '5rem', height: 'auto' }}>
         {isLoading ? (
@@ -50,11 +36,15 @@ export default function Events({ events, isLoading, title }) {
                   flexDirection: 'column',
                   width: '261px',
                   height: '218px',
-                  [theme.breakpoints.down('sm')]: { width: '100%', height: '50%' },
+                  mb: '1.5rem',
+                  [theme.breakpoints.down('sm')]: {
+                    width: '100%',
+                    height: '50%',
+                  },
                 }}
                 key={Math.random()}
               >
-                <Box sx={{ height: '70%' }} component={Link} to={`/dashboard/event-details/${item.uid}`}>
+                <Box sx={{ height: '70%' }} component={Link} to={`${baseLink}/${item.uid}`}>
                   <img
                     src={item.photoUrl}
                     alt={item.name}
@@ -69,10 +59,10 @@ export default function Events({ events, isLoading, title }) {
                 </Box>
                 <Box sx={{ display: 'flex', gap: '4%', height: 'auto', mt: '2%' }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
-                    <Typography sx={{ fontWeight: '600', fontSize: '.9rem', color: '#000', textAlign: 'center' }}>
+                    <Typography sx={{ fontWeight: '400', fontSize: '.9rem', color: '#000', textAlign: 'center' }}>
                       {item.date.substring(8)}
                     </Typography>
-                    <Typography sx={{ fontWeight: '400', fontSize: '.7rem', color: '#000', textAlign: 'center' }}>
+                    <Typography sx={{ fontWeight: '400', fontSize: '.9rem', color: '#000', textAlign: 'center' }}>
                       {month[Number(item.date.substring(5, 7)) - 1]}
                     </Typography>
                   </Box>
@@ -82,11 +72,44 @@ export default function Events({ events, isLoading, title }) {
                     >
                       {item.name}
                     </Typography>
-                    <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '.7rem' }}>
-                      {item.description}
-                    </Typography>
+                    {baseLink === '/dashboard/event-details' && (
+                      <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '.7rem' }}>
+                        {item.description}
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
+                {baseLink !== '/dashboard/event-details' && (
+                  <Stack direction="row" justifyContent="space-between" sx={{ mt: '1rem' }}>
+                    <GameButton
+                      size="small"
+                      variant="outlined"
+                      color="error"
+                      component={Link}
+                      to={`/dashboard/quiz-results/${item.uid}`}
+                    >
+                      Quiz
+                    </GameButton>
+                    <GameButton
+                      size="small"
+                      variant="outlined"
+                      color="success"
+                      component={Link}
+                      to={`/dashboard/music-match-results/${item.uid}`}
+                    >
+                      Music match
+                    </GameButton>
+                    <GameButton
+                      size="small"
+                      variant="outlined"
+                      color="warning"
+                      component={Link}
+                      to={`/dashboard/raffle-draw-results/${item.uid}`}
+                    >
+                      Raffle draw
+                    </GameButton>
+                  </Stack>
+                )}
               </Box>
             ))}
           </>
@@ -99,6 +122,10 @@ export default function Events({ events, isLoading, title }) {
 Events.propTypes = {
   events: PropTypes.array,
   isLoading: PropTypes.bool,
-  // handleFilterChange: PropTypes.func,
   title: PropTypes.string,
+  baseLink: PropTypes.string,
+};
+
+Events.defaultProps = {
+  baseLink: '/dashboard/event-details',
 };
