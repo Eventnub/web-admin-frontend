@@ -3,7 +3,6 @@ import {
   Box,
   Typography,
   TextField,
-  InputAdornment,
   MenuItem,
   Accordion,
   AccordionDetails,
@@ -12,7 +11,6 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import filter from '../../../assets/filter.png';
 import wonIcon from '../../../assets/won.png';
 import failedIcon from '../../../assets/failed.png';
 
@@ -34,17 +32,7 @@ export default function RaffleDrawsTable({ raffleDrawResults }) {
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2, mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Draws Table</Typography>
-        <TextField
-          select
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <img src={filter} alt="filter" style={{ height: '19px' }} />
-              </InputAdornment>
-            ),
-          }}
-          //   onChange={handleFilterChange}
-        >
+        <TextField select defaultValue="All" sx={{ minWidth: '210px' }}>
           <MenuItem value="All">All</MenuItem>
           <MenuItem value="Passed">Correct Draws</MenuItem>
           <MenuItem value="Failed">Incorrect Draws</MenuItem>
@@ -54,9 +42,9 @@ export default function RaffleDrawsTable({ raffleDrawResults }) {
         {raffleDrawResults.map((item, index) => (
           <Accordion sx={{ bgcolor: '#FAFAFA', mb: 1 }} key={Math.random()}>
             <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel2a-content" id="panel2a-header">
-              <Typography sx={{ color: '#000', fontWeight: '400' }}>{`${(index + 1)
-                .toString()
-                .padStart(2, '0')}`}</Typography>
+              <Typography sx={{ color: '#000', fontWeight: '400' }}>
+                {`${(index + 1).toString().padStart(2, '0')}`}
+              </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', ml: 4, width: '100%' }}>
                 <Box sx={{ flex: 0.5 }}>
                   <Text>{`${item.user?.firstName} ${item.user?.lastName}`}</Text>

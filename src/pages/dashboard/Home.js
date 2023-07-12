@@ -94,7 +94,7 @@ export default function Home() {
           events={events}
           isLoading={isLoading}
           // handleFilterChange={handleFilterChange}
-          title="Recently Created"
+          title="Recently Created "
         />
       </Box>
     </Box>

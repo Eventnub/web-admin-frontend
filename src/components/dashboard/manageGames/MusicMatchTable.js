@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box,
   Typography,
-  InputAdornment,
   TextField,
   MenuItem,
   styled,
@@ -16,7 +15,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import play from '../../../assets/play.png';
 import wonIcon from '../../../assets/won.png';
 import failedIcon from '../../../assets/failed.png';
-import filter from '../../../assets/filter.png';
 
 const Text = styled(Typography)({
   color: '#000',
@@ -29,17 +27,7 @@ export default function MusicMatchTable({ musicMatchResults }) {
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: '100%', mt: 5, borderRadius: '10px', p: 2, mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Music Match Table</Typography>
-        <TextField
-          select
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <img src={filter} alt="filter" style={{ height: '19px' }} />
-              </InputAdornment>
-            ),
-          }}
-          //   onChange={handleFilterChange}
-        >
+        <TextField select defaultValue="All" sx={{ minWidth: '210px' }}>
           <MenuItem value="All">All</MenuItem>
           <MenuItem value="Passed Recordings">Passed Recordings</MenuItem>
           <MenuItem value="Failed Recordings">Failed Recordings</MenuItem>

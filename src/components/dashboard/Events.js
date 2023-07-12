@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, Typography, useTheme, CircularProgress, Stack, Button, styled } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Typography, useTheme, CircularProgress, Grid, Button, styled } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 const GameButton = styled(Button)({
   textAlign: 'center',
   fontWeight: '400',
+  width: '100%',
 });
 
 export default function Events({ events, isLoading, title, baseLink }) {
@@ -44,7 +45,7 @@ export default function Events({ events, isLoading, title, baseLink }) {
                 }}
                 key={Math.random()}
               >
-                <Box sx={{ height: '70%' }} component={Link} to={`${baseLink}/${item.uid}`}>
+                <Box sx={{ height: '70%' }} component={RouterLink} to={`${baseLink}/${item.uid}`}>
                   <img
                     src={item.photoUrl}
                     alt={item.name}
@@ -80,35 +81,51 @@ export default function Events({ events, isLoading, title, baseLink }) {
                   </Box>
                 </Box>
                 {baseLink !== '/dashboard/event-details' && (
-                  <Stack direction="row" justifyContent="space-between" sx={{ mt: '1rem' }}>
-                    <GameButton
-                      size="small"
-                      variant="outlined"
-                      color="error"
-                      component={Link}
-                      to={`/dashboard/quiz-results/${item.uid}`}
-                    >
-                      Quiz
-                    </GameButton>
-                    <GameButton
-                      size="small"
-                      variant="outlined"
-                      color="success"
-                      component={Link}
-                      to={`/dashboard/music-match-results/${item.uid}`}
-                    >
-                      Music match
-                    </GameButton>
-                    <GameButton
-                      size="small"
-                      variant="outlined"
-                      color="warning"
-                      component={Link}
-                      to={`/dashboard/raffle-draw-results/${item.uid}`}
-                    >
-                      Raffle draw
-                    </GameButton>
-                  </Stack>
+                  <Box>
+                    <Grid container sx={{ mt: '0.5rem' }} spacing={'0.3rem'}>
+                      <Grid item xs={6}>
+                        <GameButton
+                          size="small"
+                          variant="outlined"
+                          component={RouterLink}
+                          to={`/dashboard/quiz-results/${item.uid}`}
+                        >
+                          Quiz
+                        </GameButton>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <GameButton
+                          size="small"
+                          variant="outlined"
+                          component={RouterLink}
+                          to={`/dashboard/music-match-results/${item.uid}`}
+                        >
+                          Music match
+                        </GameButton>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <GameButton
+                          size="small"
+                          variant="outlined"
+                          component={RouterLink}
+                          to={`/dashboard/raffle-draw-results/${item.uid}`}
+                        >
+                          Raffle draw
+                        </GameButton>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <GameButton
+                          size="small"
+                          variant="outlined"
+                          color="success"
+                          component={RouterLink}
+                          to={`/dashboard/ticket-winners/${item.uid}`}
+                        >
+                          Winners
+                        </GameButton>
+                      </Grid>
+                    </Grid>
+                  </Box>
                 )}
               </Box>
             ))}

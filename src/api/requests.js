@@ -59,4 +59,8 @@ export const requests = {
     axios.get(`${endpoints.getEventRaffleDraw}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
   getSeatGeekEvent: (eventId, idToken) =>
     axios.get(`${endpoints.getSeatGeekEvent}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  getQuizAndMusicUnisonWinners: (eventId, idToken) =>
+    axios.get(`${endpoints.getQuizAndMusicUnisonWinners}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  getEventRaffleDrawWinners: (eventId, idToken) =>
+    axios.get(`${endpoints.getEventRaffleDrawWinners}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
 };
