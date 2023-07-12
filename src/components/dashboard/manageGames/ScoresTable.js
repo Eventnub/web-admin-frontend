@@ -4,7 +4,6 @@ import {
   Typography,
   TextField,
   MenuItem,
-  InputAdornment,
   Accordion,
   AccordionDetails,
   AccordionSummary,
@@ -12,7 +11,6 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import filter from '../../../assets/filter.png';
 import wonIcon from '../../../assets/won.png';
 import failedIcon from '../../../assets/failed.png';
 
@@ -38,17 +36,7 @@ export default function ScoresTable({ quizResults }) {
     <Box sx={{ bgcolor: '#fff', height: 'auto', width: 'auto', mt: 5, borderRadius: '10px', p: 2, mb: 4 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '.8rem' }}>Scores Table</Typography>
-        <TextField
-          select
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <img src={filter} alt="filter" style={{ height: '19px' }} />
-              </InputAdornment>
-            ),
-          }}
-          //   onChange={handleFilterChange}
-        >
+        <TextField select defaultValue="All" sx={{ minWidth: '210px' }}>
           <MenuItem value="All">All</MenuItem>
           <MenuItem value="Passed">Passed</MenuItem>
           <MenuItem value="Failed">Failed</MenuItem>
@@ -68,9 +56,6 @@ export default function ScoresTable({ quizResults }) {
                 <Box sx={{ flex: 1 }}>
                   <Text>{item.user.email}</Text>
                 </Box>
-                {/* <Box sx={{ flex: 1 }}>
-                  <Text>{item.number}</Text>
-                </Box> */}
                 <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', gap: '.5rem' }}>
                   <Text>Scored</Text>
                   <Box
