@@ -25,6 +25,7 @@ const Question = styled(Typography)({
   fontSize: '.7rem',
   fontWeight: '400',
 });
+
 const Answer = styled(Typography)({
   color: '#515151',
   fontSize: '.7rem',
