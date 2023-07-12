@@ -43,6 +43,7 @@ const ManageGames = Loadable(lazy(() => import('../pages/dashboard/ManageGames')
 const QuizScoresPage = Loadable(lazy(() => import('../pages/dashboard/QuizScoresPage')));
 const RaffleScoresPage = Loadable(lazy(() => import('../pages/dashboard/RaffleScoresPage')));
 const MusicMatchResultPage = Loadable(lazy(() => import('../pages/dashboard/MusicMatchResultPage')));
+const TicketWinners = Loadable(lazy(() => import('../pages/dashboard/TicketWinners')));
 
 // Main
 const HomePage = Loadable(lazy(() => import('../pages/dashboard/Home')));
@@ -104,6 +105,7 @@ export default function Router() {
         { path: 'quiz-results/:eventId', element: <QuizScoresPage /> },
         { path: 'raffle-draw-results/:eventId', element: <RaffleScoresPage /> },
         { path: 'music-match-results/:eventId', element: <MusicMatchResultPage /> },
+        { path: 'ticket-winners/:eventId', element: <TicketWinners /> },
       ],
     },
 

@@ -22,4 +22,6 @@ export const endpoints = {
   getEventMusicMatchResults: getFullUrl('music-unison/get-event-music-unison-results'),
   getSeatGeekEvent: getFullUrl('seat-geek/get-event'),
   getEventRaffleDraw: getFullUrl('raffle-draws/get-event-raffle-draw'),
+  getQuizAndMusicUnisonWinners: getFullUrl('quiz-and-music-unison/get-quiz-and-music-unison-winners'),
+  getEventRaffleDrawWinners: getFullUrl('raffle-draws/get-event-raffle-draw-winners'),
 };
