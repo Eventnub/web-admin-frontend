@@ -35,6 +35,8 @@ export default function TicketWinners() {
   const [quizAndMusicMatchWinners, setQuizAndMusicMatchWinners] = useState([]);
   const [raffleDrawWinners, setRaffleDrawWinners] = useState([]);
 
+  const getFormattedValue = (value) => (value < 10 ? `0${value}` : value);
+
   const fetchEventDetails = async () => {
     try {
       const { data } = await requests.getEvent(eventId);
@@ -102,15 +104,15 @@ export default function TicketWinners() {
         </Typography>
         <Box sx={{ mt: 3, display: 'flex', alignItems: 'center', gap: 3 }}>
           <StyledBox>
-            <Number>{quizAndMusicMatchWinners?.length + raffleDrawWinners?.length || 0}</Number>
+            <Number>{getFormattedValue(quizAndMusicMatchWinners?.length + raffleDrawWinners?.length)}</Number>
             <Text>Total</Text>
           </StyledBox>
           <StyledBox>
-            <Number>{quizAndMusicMatchWinners?.length || 0}</Number>
+            <Number>{getFormattedValue(quizAndMusicMatchWinners?.length)}</Number>
             <Text>Quiz & Music Match</Text>
           </StyledBox>
           <StyledBox>
-            <Number>{raffleDrawWinners?.length || 0}</Number>
+            <Number>{getFormattedValue(raffleDrawWinners?.length)}</Number>
             <Text>Raffle Draw</Text>
           </StyledBox>
         </Box>
