@@ -25,8 +25,8 @@ export default function ValidateAudioPage() {
   useEffect(() => {
     async function getPendingMusicMatchValidations() {
       try {
-        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken); 
-        const [musicMatch] = data.filter((item) => (item.uid = musicMatchSubmissionId));
+        const { data } = await requests.getUnvalidatedMusicMatchSubmissions(user.idToken);
+        const [musicMatch] = data.filter((item) => item.uid === musicMatchSubmissionId);
         setPendingMusicMatchValidation(musicMatch);
       } catch (error) {
         console.log(error);
