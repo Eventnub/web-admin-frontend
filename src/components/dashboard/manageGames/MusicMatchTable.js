@@ -56,30 +56,39 @@ export default function MusicMatchTable({ musicMatchResults }) {
               </Box>
             </AccordionSummary>
             <AccordionDetails sx={{ ml: 6 }}>
-              <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>Lyrics</Typography>
-              <Typography sx={{ fontWeight: '400', color: '#515151', fontSize: '.8rem', mt: 1 }}>
-                {item.lyrics}
-              </Typography>
-              <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700', mt: 1.2 }}>
-                Words Missed
-              </Typography>
-              <Typography sx={{ color: '#FF0000', fontWeight: '400', fontSize: '.8rem', mt: 1 }}>
-                {item.wordsMissed}
-              </Typography>
-              <Box sx={{ mt: 1.2, display: 'flex', alignItems: 'center', gap: 4 }}>
-                <Stack direction="row" spacing={0.5}>
-                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>
-                    Percentage score:
+              {!item.isReviewed ? (
+                <>
+                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>Status</Typography>
+                  <Typography
+                    sx={{ fontWeight: '400', color: item.isReviewed ? '#515151' : '#ff1818', fontSize: '.8rem', mt: 1 }}
+                  >
+                    {item.isReviewed ? 'Validated' : 'Unvalidated'}
                   </Typography>
-                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>
-                    {item.percentageScore}
+                </>
+              ) : (
+                <>
+                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700', mt: 1.2 }}>
+                    Words Missed
                   </Typography>
-                </Stack>
-                <Stack direction="row" spacing={0.5}>
-                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>Validator:</Typography>
-                  <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>{item.validator}</Typography>
-                </Stack>
-              </Box>
+                  <Typography sx={{ color: '#FF0000', fontWeight: '400', fontSize: '.8rem', mt: 1 }}>
+                    {item?.wrongWords?.join(', ')}
+                  </Typography>
+                  <Box sx={{ mt: 1.2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Stack direction="row" spacing={0.5}>
+                      <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>
+                        Percentage score:
+                      </Typography>
+                      <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '400' }}>
+                        {(item.accuracyRatio * 100).toFixed(2)}%
+                      </Typography>
+                    </Stack>
+                    <Stack direction="row" spacing={0.5}>
+                      <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '700' }}>Validator:</Typography>
+                      <Typography sx={{ color: '#000', fontSize: '.8rem', fontWeight: '400' }}>Admin</Typography>
+                    </Stack>
+                  </Box>
+                </>
+              )}
             </AccordionDetails>
           </Accordion>
         ))}
