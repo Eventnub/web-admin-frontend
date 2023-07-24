@@ -8,7 +8,6 @@ import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
-import Resizer from 'react-image-file-resizer';
 // import google from '../../assets/Google-drive.png';
 import storage from '../../assets/storage.png';
 // import cloud from '../../assets/Cloud-upload.png';
@@ -85,12 +84,9 @@ const CreateEventForm = () => {
       window.alert(`Unsupported file format: ${fileExtension}`);
       return null;
     }
-
-    const resizedFile = await resizeFile(file);
-    setImage(resizedFile);
-
+    setImage(file);
     const reader = new FileReader();
-    reader.readAsDataURL(resizedFile);
+    reader.readAsDataURL(file);
     // eslint-disable-next-line
     reader.onload = function (event) {
       photoRef.current.style.backgroundImage = `url(${event.target.result})`;
@@ -98,22 +94,6 @@ const CreateEventForm = () => {
 
     return null;
   };
-
-  const resizeFile = (file) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        600,
-        600,
-        'JPEG',
-        100,
-        0,
-        (uri) => {
-          resolve(uri);
-        },
-        'file'
-      );
-    });
 
   const handleChangeSeatGeekEventId = (e) => {
     setSeatGeekEventId(e.target.value);
