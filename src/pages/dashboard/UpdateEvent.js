@@ -8,7 +8,6 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import { LoadingButton } from '@mui/lab';
 import * as Yup from 'yup';
-import Resizer from 'react-image-file-resizer';
 // import google from '../../assets/Google-drive.png';
 import storage from '../../assets/storage.png';
 // import cloud from '../../assets/Cloud-upload.png';
@@ -84,12 +83,9 @@ export default function CreateEvent() {
       window.alert(`Unsupported file format: ${fileExtension}`);
       return null;
     }
-
-    const resizedFile = await resizeFile(file);
-    setImage(resizedFile);
-
+    setImage(file);
     const reader = new FileReader();
-    reader.readAsDataURL(resizedFile);
+    reader.readAsDataURL(file);
     // eslint-disable-next-line
     reader.onload = function (event) {
       photoRef.current.style.backgroundImage = `url(${event.target.result})`;
@@ -97,22 +93,6 @@ export default function CreateEvent() {
 
     return null;
   };
-
-  const resizeFile = (file) =>
-    new Promise((resolve) => {
-      Resizer.imageFileResizer(
-        file,
-        300,
-        300,
-        'JPEG',
-        100,
-        0,
-        (uri) => {
-          resolve(uri);
-        },
-        'file'
-      );
-    });
 
   useEffect(() => {
     async function fetchEvents() {
