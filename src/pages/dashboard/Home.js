@@ -29,14 +29,16 @@ const Text = styled(Typography)({
 
 export default function Home() {
   const [events, setEvents] = useState([]);
+  const [statistics, setStatistics] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchEvents() {
       try {
         setIsLoading(true);
-        const { data } = await requests.getEvents();
-        setEvents(data);
+        const [events, statistics] = await Promise.all([requests.getEvents(), requests.getBasicStatistics()]);
+        setEvents(events.data);
+        setStatistics(statistics.data);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -45,21 +47,6 @@ export default function Home() {
 
     fetchEvents();
   }, []);
-
-  // const handleFilterChange = async (e) => {
-  //   const { value } = e.target.value;
-  //   console.log(value);
-  //   if (value === 'Unapproved Events') {
-  //     try {
-  //       setIsLoading(true);
-  //       const { data } = await requests.getUnapprovedEvents();
-  //       setEvents(data);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
 
   return (
     <Box sx={{ bgcolor: '#F4FAFB', height: '100%', width: '100%', pt: 3, pl: 1, pr: 2 }}>
@@ -73,29 +60,24 @@ export default function Home() {
       </Box>
       <Box sx={{ display: 'flex', gap: '1rem', mt: 5 }}>
         <StyledBox>
-          <Number>{events.length < 10 ? `0${events.length}` : events.length}</Number>
+          <Number>{statistics?.eventsCount || '00'}</Number>
           <Text>Total events</Text>
         </StyledBox>
         <StyledBox>
-          <Number>$8,000</Number>
+          <Number>00</Number>
           <Text>For 100 tickets sold</Text>
         </StyledBox>
         <StyledBox>
-          <Number>10k</Number>
+          <Number>00</Number>
           <Text>Impressions</Text>
         </StyledBox>
         <StyledBox>
-          <Number>1.5k</Number>
+          <Number>{statistics?.usersCount || '00'}</Number>
           <Text>Total fans</Text>
         </StyledBox>
       </Box>
       <Box sx={{ bgcolor: '#fff', mt: 5, p: '1rem' }}>
-        <Events
-          events={events}
-          isLoading={isLoading}
-          // handleFilterChange={handleFilterChange}
-          title="Recently Created "
-        />
+        <Events events={events} isLoading={isLoading} title="Recently Created " />
       </Box>
     </Box>
   );
