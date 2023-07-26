@@ -63,4 +63,5 @@ export const requests = {
     axios.get(`${endpoints.getQuizAndMusicUnisonWinners}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
   getEventRaffleDrawWinners: (eventId, idToken) =>
     axios.get(`${endpoints.getEventRaffleDrawWinners}/${eventId}`, getJsonHeaderWithAuthToken(idToken)),
+  getBasicStatistics: () => axios.get(`${endpoints.getBasicStatistics}`, jsonHeader),
 };
