@@ -480,6 +480,7 @@ export default function CreateEvent() {
                     <StyledTextField
                       variant="outlined"
                       placeholder="Price"
+                      type="number"
                       value={currentTicket.price}
                       onChange={(e) => setCurrentTicket((p) => ({ ...p, price: e.target.value }))}
                       fullWidth
