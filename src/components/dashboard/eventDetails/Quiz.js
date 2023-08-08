@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Switch, TextField, Stack, IconButton } from '@mui/material';
+import { Box, Typography, Switch, TextField, Stack, Grid, IconButton } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -28,10 +28,8 @@ export default function Quiz({ startDate, endDate }) {
   useEffect(() => {
     async function fetchEvents() {
       try {
-        // setIsLoading(true);
         const { data } = await requests.getEventQuestion(eventId, user.idToken);
         setQuestions(data);
-        // setIsLoading(false);
       } catch (error) {
         console.log(error);
       }
@@ -39,6 +37,7 @@ export default function Quiz({ startDate, endDate }) {
 
     fetchEvents();
   }, [eventId, user.idToken]);
+
   return (
     <Box sx={{ mt: '4rem' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: '2rem' }}>
@@ -47,8 +46,89 @@ export default function Quiz({ startDate, endDate }) {
       </Box>
       <Formik
         initialValues={{
-          startDate: '',
-          endDate: '',
+          startDate: startDate ? new Date(startDate).toISOString().slice(0, 10) : '',
+          endDate: endDate ? new Date(endDate).toISOString().slice(0, 10) : '',
+        }}
+        enableReinitialize
+        onSubmit={async (values, { setSubmitting }) => {
+          const gameDateUpdate = new FormData();
+          const startTimeStamp = getTime(new Date(values.startDate));
+          const endTimeStamp = getTime(new Date(values.endDate));
+          gameDateUpdate.append('gameStartTimestamp', startTimeStamp);
+          gameDateUpdate.append('gameEndTimestamp', endTimeStamp);
+
+          try {
+            await requests.updateEvent(eventId, gameDateUpdate, user.idToken);
+            setSubmitting(false);
+          } catch (error) {
+            console.log(error);
+          }
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form autoComplete="off">
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={5}>
+                <Typography>Set Start Date</Typography>
+                <Field name="startDate">
+                  {({ field, form }) => (
+                    <TextField
+                      {...field}
+                      variant="outlined"
+                      placeholder="Start Date"
+                      type="date"
+                      fullWidth
+                      error={form.errors.startDate && form.touched.startDate}
+                      helperText={form.errors.startDate}
+                    />
+                  )}
+                </Field>
+              </Grid>
+              <Grid item xs={12} md={5}>
+                <Typography>Set End Date</Typography>
+                <Field name="endDate">
+                  {({ field, form }) => (
+                    <TextField
+                      {...field}
+                      variant="outlined"
+                      placeholder="End Date"
+                      type="date"
+                      fullWidth
+                      error={form.errors.endDate && form.touched.endDate}
+                      helperText={form.errors.endDate}
+                    />
+                  )}
+                </Field>
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <LoadingButton
+                  fullWidth
+                  size="large"
+                  variant="contained"
+                  type="submit"
+                  loading={isSubmitting}
+                  sx={{
+                    background: '#FF6C2C',
+                    boxShadow: 'none',
+                    mt: { md: '1.5rem' },
+                    borderRadius: '5px',
+                    '&:hover': {
+                      color: '#FF6C2C',
+                      background: '#FFFFFF',
+                      border: '2px solid #FF6C2C',
+                    },
+                  }}
+                >
+                  Save
+                </LoadingButton>
+              </Grid>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
+
+      <Formik
+        initialValues={{
           question: '',
           option1: '',
           option2: '',
@@ -56,6 +136,7 @@ export default function Quiz({ startDate, endDate }) {
           option4: '',
           answer: '',
         }}
+        enableReinitialize
         validationSchema={Yup.object({
           question: Yup.string().required('Question is required'),
           option1: Yup.string().required('Option 1 is required'),
@@ -65,19 +146,6 @@ export default function Quiz({ startDate, endDate }) {
           answer: Yup.string().required('Answer is required'),
         })}
         onSubmit={async (values, { setSubmitting, resetForm }) => {
-          console.log({ startDate, endDate });
-
-          const gameDateUpdate = new FormData();
-          const startTimeStamp = getTime(new Date(values.startDate));
-          const endTimeStamp = getTime(new Date(values.endDate));
-          if (startTimeStamp && startTimeStamp !== startDate) {
-            gameDateUpdate.append('gameStartTimestamp', startTimeStamp);
-          }
-          if (endTimeStamp && endTimeStamp !== endDate) {
-            gameDateUpdate.append('gameEndTimestamp', endTimeStamp);
-          }
-
-          console.log({ sd: startTimeStamp, ed: endTimeStamp });
           const data = {
             eventId,
             question: values.question,
@@ -86,9 +154,6 @@ export default function Quiz({ startDate, endDate }) {
           };
 
           try {
-            if (Array.from(gameDateUpdate.keys()).length > 0) {
-              await requests.updateEvent(eventId, gameDateUpdate, user.idToken);
-            }
             await requests.addQuestion(user.idToken, data);
             setQuestions([...questions, data]);
             setSubmitting(false);
@@ -100,68 +165,35 @@ export default function Quiz({ startDate, endDate }) {
       >
         {({ isSubmitting }) => (
           <Form autoComplete="off">
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-              <Stack sx={{ flex: 1 }}>
-                <Typography>Set Start Date</Typography>
-                <Field name="startDate">
-                  {({ field, form }) => (
-                    <TextField
-                      {...field}
-                      variant="outlined"
-                      placeholder="Set Start Date"
-                      type="date"
-                      fullWidth
-                      error={form.errors.startDate && form.touched.startDate}
-                      helperText={form.errors.startDate}
-                    />
-                  )}
-                </Field>
-              </Stack>
-              <Stack sx={{ flex: 1 }}>
-                <Typography>Set End Date</Typography>
-                <Field name="endDate">
-                  {({ field, form }) => (
-                    <TextField
-                      {...field}
-                      variant="outlined"
-                      placeholder="Set End Date"
-                      type="date"
-                      fullWidth
-                      error={form.errors.endDate && form.touched.endDate}
-                      helperText={form.errors.endDate}
-                    />
-                  )}
-                </Field>
-              </Stack>
-            </Box>
             <Box sx={{ height: 'auto', bgcolor: '#fff', mt: '1rem', borderRadius: '10px', p: 2 }}>
               {questions.map((question, index) => (
-                <Box
-                  sx={{
-                    bgcolor: '#EFEFEF',
-                    p: 2,
-                    borderRadius: '10px',
-                    mb: 1,
-                  }}
-                  key={Math.random()}
-                >
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box sx={{ bgcolor: '#EFEFEF', p: 2, borderRadius: '10px', mb: 1 }} key={Math.random()}>
+                  <Stack direction="row" justifyContent="space-between" alignItems="start" sx={{ mb: '1rem' }}>
                     <Typography sx={{ color: '#000', fontWeight: '400', fontSize: '1.2rem' }}>
                       {question.question}
                     </Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                      <IconButton onClick={() => handleRemoveQuestion(question.uid, index)}>
-                        <img src={deleteIcon} alt="edit" style={{ height: 20, width: 20 }} />
-                      </IconButton>
-                    </Box>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, gap: 2 }}>
+                    <IconButton onClick={() => handleRemoveQuestion(question.uid, index)}>
+                      <img src={deleteIcon} alt="edit" style={{ height: 20, width: 20 }} />
+                    </IconButton>
+                  </Stack>
+                  <Grid container spacing={{ xs: 1, md: 2 }}>
                     {question.answerOptions.map((option) => (
-                      <Box sx={{ bgcolor: '#0BB7CE', borderRadius: '30px', p: 1, width: 186 }} key={Math.random()}>
-                        <Typography sx={{ color: '#fff', fontWeight: '600', textAlign: 'center' }}>{option}</Typography>
-                      </Box>
+                      <Grid item xs={12} md={3} key={Math.random()}>
+                        <Typography
+                          sx={{
+                            bgcolor: '#0BB7CE',
+                            borderRadius: '30px',
+                            p: 1,
+                            color: '#fff',
+                            fontWeight: '600',
+                            textAlign: 'center',
+                          }}
+                        >
+                          {option}
+                        </Typography>
+                      </Grid>
                     ))}
-                  </Box>
+                  </Grid>
                 </Box>
               ))}
             </Box>
@@ -254,11 +286,15 @@ export default function Quiz({ startDate, endDate }) {
                   sx={{
                     background: '#FF6C2C',
                     boxShadow: 'none',
-                    width: '20%',
-                    height: '15%',
+                    px: '1.5rem',
                     mt: '1.5rem',
                     borderRadius: '5px',
                     alignSelf: 'flex-end',
+                    '&:hover': {
+                      color: '#FF6C2C',
+                      background: '#FFFFFF',
+                      border: '2px solid #FF6C2C',
+                    },
                   }}
                 >
                   Add Quiz
