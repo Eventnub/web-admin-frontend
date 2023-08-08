@@ -36,6 +36,7 @@ const Text = styled(Typography)({
 export default function EventDatailsPage() {
   const [event, setEvent] = useState({});
   const [tickets, setTickets] = useState([]);
+  const [raffleStartNumber, setRaffleStartNumber] = useState(0);
   const { eventId } = useParams();
   const { date, time } = event;
   const formattedDate = moment(date).format('Do MMM, YYYY').toUpperCase();
@@ -44,20 +45,20 @@ export default function EventDatailsPage() {
   const { user } = useFirebase();
 
   useEffect(() => {
-    async function fetchEvents() {
+    async function fetchEventDetails() {
       try {
-        // setIsLoading(true);
-        const { data } = await requests.getEvent(eventId);
-        setEvent(data);
-        setTickets(data.tickets);
-        // setIsLoading(false);
+        const { data: eventData } = await requests.getEvent(eventId);
+        const { data: raffleDrawData } = await requests.getEventRaffleDraw(eventId, user.idToken);
+        setEvent(eventData);
+        setTickets(eventData.tickets);
+        setRaffleStartNumber(raffleDrawData.firstNumber);
       } catch (error) {
         console.log(error);
       }
     }
 
-    fetchEvents();
-  }, [eventId]);
+    fetchEventDetails();
+  }, [eventId, user.idToken]);
 
   const handleArchive = async () => {
     const formData = new FormData();
@@ -216,7 +217,7 @@ export default function EventDatailsPage() {
         </StyledBox>
       </Box>
       <Engagements eventId={eventId} />
-      <RaffleDraw />
+      <RaffleDraw raffleStartNumber={raffleStartNumber} />
       <Quiz endDate={event.gameEndTimestamp} startDate={event.gameStartTimestamp} />
       <MusicMatch />
     </Box>
