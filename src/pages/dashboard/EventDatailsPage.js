@@ -78,7 +78,10 @@ export default function EventDatailsPage() {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <UserProfile />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '1rem' }}>
+      <Stack
+        direction={{ xs: 'column-reverse', md: 'row' }}
+        sx={{ alignItems: 'center', justifyContent: 'space-between', mt: '1rem' }}
+      >
         <PageTitle title={event.name} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
           <Typography sx={{ color: '#000', fontSize: '1rem', fontWeight: '500' }}>
@@ -86,15 +89,16 @@ export default function EventDatailsPage() {
           </Typography>
           <Switch size="small" />
         </Box>
-      </Box>
-      <Box
+      </Stack>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        justifyContent="center"
         sx={{
           bgcolor: '#fff',
           height: 'auto',
           mt: '1rem',
           borderRadius: '10px',
           p: '1rem',
-          display: 'flex',
           alignItems: 'center',
         }}
       >
@@ -124,7 +128,7 @@ export default function EventDatailsPage() {
               color: '#515151',
               fontSize: '1rem',
               fontWeight: '400',
-              // maxWidth: { xs: '100%', md: '100%' },
+              mt: { xs: '1rem', md: '0' },
             }}
           >
             {event.description}
@@ -155,7 +159,7 @@ export default function EventDatailsPage() {
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </Stack>
       <Box sx={{ bgcolor: '#fff', height: 120, mt: '1rem', p: '.8rem', borderRadius: '10px' }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '1rem' }}>Tickets</Typography>
         <Box
