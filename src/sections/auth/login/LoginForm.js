@@ -63,14 +63,23 @@ export default function LoginForm() {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Box sx={{ diplay: 'flex', flexDirection: 'column' }}>
           <Box display="flex" alignItems={'stretch'}>
-            <Box sx={{ display: 'flex', bgcolor: '#1358A5', alignItems: 'center', px: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                bgcolor: '#1358A5',
+                alignItems: 'center',
+                px: 1,
+                maxHeight: '3.5rem',
+                borderTopLeftRadius: '5px',
+                borderBottomLeftRadius: '5px',
+              }}
+            >
               <Person sx={{ color: '#fff' }} />
             </Box>
             <TextField
               placeholder="Email"
               variant="outlined"
               fullWidth
-              size="small"
               {...emailFieldProps}
               error={Boolean(touched.email && errors.email)}
               helperText={touched.email && errors.email}
@@ -83,14 +92,23 @@ export default function LoginForm() {
             />
           </Box>
           <Box display="flex" mt={3}>
-            <Box sx={{ display: 'flex', bgcolor: '#1358A5', alignItems: 'center', px: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                bgcolor: '#1358A5',
+                alignItems: 'center',
+                px: 1,
+                maxHeight: '3.5rem',
+                borderTopLeftRadius: '5px',
+                borderBottomLeftRadius: '5px',
+              }}
+            >
               <LockOpen sx={{ color: '#fff' }} />
             </Box>
             <TextField
               fullWidth
               variant="outlined"
               placeholder="Password"
-              size="small"
               type={showPassword ? 'text' : 'password'}
               {...getFieldProps('password')}
               InputProps={{
