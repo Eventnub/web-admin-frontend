@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Switch, Stack, Button, styled } from '@mui/material';
+import { Box, Typography, Switch, Stack, Grid, Button, styled } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { useParams, Link, useNavigate } from 'react-router-dom';
@@ -36,6 +36,7 @@ const Text = styled(Typography)({
 export default function EventDatailsPage() {
   const [event, setEvent] = useState({});
   const [tickets, setTickets] = useState([]);
+  const [raffleStartNumber, setRaffleStartNumber] = useState(0);
   const { eventId } = useParams();
   const { date, time } = event;
   const formattedDate = moment(date).format('Do MMM, YYYY').toUpperCase();
@@ -44,20 +45,20 @@ export default function EventDatailsPage() {
   const { user } = useFirebase();
 
   useEffect(() => {
-    async function fetchEvents() {
+    async function fetchEventDetails() {
       try {
-        // setIsLoading(true);
-        const { data } = await requests.getEvent(eventId);
-        setEvent(data);
-        setTickets(data.tickets);
-        // setIsLoading(false);
+        const { data: eventData } = await requests.getEvent(eventId);
+        const { data: raffleDrawData } = await requests.getEventRaffleDraw(eventId, user.idToken);
+        setEvent(eventData);
+        setTickets(eventData.tickets);
+        setRaffleStartNumber(raffleDrawData.firstNumber);
       } catch (error) {
         console.log(error);
       }
     }
 
-    fetchEvents();
-  }, [eventId]);
+    fetchEventDetails();
+  }, [eventId, user.idToken]);
 
   const handleArchive = async () => {
     const formData = new FormData();
@@ -77,7 +78,10 @@ export default function EventDatailsPage() {
       <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <UserProfile />
       </Box>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: '1rem' }}>
+      <Stack
+        direction={{ xs: 'column-reverse', md: 'row' }}
+        sx={{ alignItems: 'center', justifyContent: 'space-between', mt: '1rem' }}
+      >
         <PageTitle title={event.name} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: '.5rem' }}>
           <Typography sx={{ color: '#000', fontSize: '1rem', fontWeight: '500' }}>
@@ -85,15 +89,16 @@ export default function EventDatailsPage() {
           </Typography>
           <Switch size="small" />
         </Box>
-      </Box>
-      <Box
+      </Stack>
+      <Stack
+        direction={{ xs: 'column', md: 'row' }}
+        justifyContent="center"
         sx={{
           bgcolor: '#fff',
           height: 'auto',
           mt: '1rem',
           borderRadius: '10px',
           p: '1rem',
-          display: 'flex',
           alignItems: 'center',
         }}
       >
@@ -123,7 +128,7 @@ export default function EventDatailsPage() {
               color: '#515151',
               fontSize: '1rem',
               fontWeight: '400',
-              // maxWidth: { xs: '100%', md: '100%' },
+              mt: { xs: '1rem', md: '0' },
             }}
           >
             {event.description}
@@ -154,7 +159,7 @@ export default function EventDatailsPage() {
             </Typography>
           </Box>
         </Box>
-      </Box>
+      </Stack>
       <Box sx={{ bgcolor: '#fff', height: 120, mt: '1rem', p: '.8rem', borderRadius: '10px' }}>
         <Typography sx={{ color: '#909090', fontWeight: '400', fontSize: '1rem' }}>Tickets</Typography>
         <Box
@@ -201,22 +206,28 @@ export default function EventDatailsPage() {
           Send to Archive
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', gap: '1.5rem', mt: '4rem' }}>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>For 00 tickets sold</Text>
-        </StyledBox>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>Impressions</Text>
-        </StyledBox>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>Total fans</Text>
-        </StyledBox>
-      </Box>
+      <Grid container spacing={2} sx={{ mt: '4rem' }}>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>For 00 tickets sold</Text>
+          </StyledBox>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>Impressions</Text>
+          </StyledBox>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>Total fans</Text>
+          </StyledBox>
+        </Grid>
+      </Grid>
       <Engagements eventId={eventId} />
-      <RaffleDraw />
+      <RaffleDraw raffleStartNumber={raffleStartNumber} />
       <Quiz endDate={event.gameEndTimestamp} startDate={event.gameStartTimestamp} />
       <MusicMatch />
     </Box>
