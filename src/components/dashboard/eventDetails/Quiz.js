@@ -16,6 +16,9 @@ export default function Quiz({ startDate, endDate }) {
   const { eventId } = useParams();
   const { user } = useFirebase();
 
+  const getDisabledState = (selectedStartDate, selectedEndDate) =>
+    startDate === getTime(new Date(selectedStartDate)) && endDate === getTime(new Date(selectedEndDate));
+
   const handleRemoveQuestion = async (questionId, _index) => {
     try {
       setQuestions((prevQuestions) => prevQuestions.filter((question, index) => index !== _index));
@@ -65,7 +68,7 @@ export default function Quiz({ startDate, endDate }) {
           }
         }}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, values }) => (
           <Form autoComplete="off">
             <Grid container spacing={2}>
               <Grid item xs={12} md={5}>
@@ -107,6 +110,7 @@ export default function Quiz({ startDate, endDate }) {
                   variant="contained"
                   type="submit"
                   loading={isSubmitting}
+                  disabled={getDisabledState(values.startDate, values.endDate)}
                   sx={{
                     background: '#FF6C2C',
                     boxShadow: 'none',
