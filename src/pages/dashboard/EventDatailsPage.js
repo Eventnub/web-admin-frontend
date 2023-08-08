@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Switch, Stack, Button, styled } from '@mui/material';
+import { Box, Typography, Switch, Stack, Grid, Button, styled } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import ArchiveIcon from '@mui/icons-material/Archive';
 import { useParams, Link, useNavigate } from 'react-router-dom';
@@ -202,20 +202,26 @@ export default function EventDatailsPage() {
           Send to Archive
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', gap: '1.5rem', mt: '4rem' }}>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>For 00 tickets sold</Text>
-        </StyledBox>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>Impressions</Text>
-        </StyledBox>
-        <StyledBox>
-          <Number>00</Number>
-          <Text>Total fans</Text>
-        </StyledBox>
-      </Box>
+      <Grid container spacing={2} sx={{ mt: '4rem' }}>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>For 00 tickets sold</Text>
+          </StyledBox>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>Impressions</Text>
+          </StyledBox>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <StyledBox>
+            <Number>00</Number>
+            <Text>Total fans</Text>
+          </StyledBox>
+        </Grid>
+      </Grid>
       <Engagements eventId={eventId} />
       <RaffleDraw raffleStartNumber={raffleStartNumber} />
       <Quiz endDate={event.gameEndTimestamp} startDate={event.gameStartTimestamp} />
