@@ -90,11 +90,11 @@ export default function WinnersTable({ loading, quizAndMusicMatchWinners, raffle
                       <Text>{`${item.user?.firstName} ${item.user?.lastName}`}</Text>
                     </Box>
                     <Box sx={{ flex: 1 }}>
-                      <Text>{item.user.email}</Text>
+                      <Text>{item.user?.email}</Text>
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', gap: '.5rem' }}>
                       <Typography sx={{ color: '#000', fontSize: '.7rem', fontWeight: '700' }}>
-                        {capitalCase(item.medium)}
+                        {capitalCase(item?.medium)}
                       </Typography>
                     </Box>
                   </Box>
@@ -104,26 +104,26 @@ export default function WinnersTable({ loading, quizAndMusicMatchWinners, raffle
                     <Box>
                       <Stack direction="row" spacing={1}>
                         <Heading>Quiz score:</Heading>
-                        <Content>{item.quizRecord.numberOfPasses}</Content>
+                        <Content>{item?.quizRecord?.numberOfPasses}</Content>
                       </Stack>
                       <Stack direction="row" spacing={1}>
                         <Heading>Music match accuracy:</Heading>
-                        <Content>{item.musicUnisonRecord.accuracyRatio}%</Content>
+                        <Content>{item?.musicUnisonRecord?.accuracyRatio}%</Content>
                       </Stack>
                       <Stack direction="row" spacing={1}>
                         <Heading>Ticket won:</Heading>
-                        <Content>{item.ticketWon.type}</Content>
+                        <Content>{item?.ticketWon?.type}</Content>
                       </Stack>
                     </Box>
                   ) : (
                     <Box>
                       <Stack direction="row" spacing={1}>
                         <Heading>Raffle draw score:</Heading>
-                        <Content>{item.raffleDrawRecord.numberOfCorrectMatches}</Content>
+                        <Content>{item?.raffleDrawRecord?.numberOfCorrectMatches}</Content>
                       </Stack>
                       <Stack direction="row" spacing={1}>
                         <Heading>Ticket won:</Heading>
-                        <Content>{item.ticketWon.type}</Content>
+                        <Content>{item?.ticketWon?.type}</Content>
                       </Stack>
                     </Box>
                   )}

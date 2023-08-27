@@ -49,7 +49,7 @@ export default function TicketWinners() {
   const fetchQuizAndMusicMatchWinners = async () => {
     try {
       const { data } = await requests.getQuizAndMusicUnisonWinners(eventId, user.idToken);
-      setQuizAndMusicMatchWinners(data.winners);
+      setQuizAndMusicMatchWinners(data);
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +58,7 @@ export default function TicketWinners() {
   const fetchRaffleDrawWinners = async () => {
     try {
       const { data } = await requests.getEventRaffleDrawWinners(eventId, user.idToken);
-      setRaffleDrawWinners(data.winners);
+      setRaffleDrawWinners(data);
     } catch (error) {
       console.log(error);
     }
